@@ -204,3 +204,91 @@ gcloud functions logs read nodejs-pubsub-function \
 
 > **_NOTE:_** The logs can take around 10 mins to appear. Also, the alternative way to view the logs is, go to **Logging > Logs Explorer**.
 
+## Google Kubernetes Engine
+
+**Container**
+
+A container is intended to provide workload-independent scalability in **PaaS** and an OS and hardware abstraction layer in **IaaS**.
+
+A configurable system allows you to install your favorite web server, database, or middleware runtime environment, configure underlying system resources such as disk space, disk I/O, or networking tools, and compile to your liking.
+
+Invisible box that surrounds code and its dependencies and has limited access to its own file system partition and hardware. Only requires a few system calls to create and starts as quickly as a process. All that is needed on each host is a container-capable OS kernel and a container runtime environment. Escala como las PaaS, pero brinda casi la misma flexibilidad que las IaaS.
+
+### Kubernetes
+
+Container orchestration tool for simplifying the management of containerized environments. Can be install Kubernetes on a group of your managed servers or run it as a hosted service on Google Cloud in a cluster of Compute Engine managed instances called Google Kubernetes Engine.
+
+Allows you to:
+
+* Install the system on local servers in the cloud
+* Manage container networking and data storage
+* Deploy rollouts and rollbacks
+* Monitor and manage container and host health
+
+### Set a default compute zone
+
+Your compute zone is an approximate regional location in which your clusters and their resources live. For example, us-central1-a is a zone in the us-central1 region.
+
+Set the default compute region:
+
+```bash
+gcloud config set compute/region "REGION"
+```
+
+Set the default compute zone:
+
+```bash
+gcloud config set compute/zone "ZONE"
+```
+
+### Create a GKE cluster
+
+A cluster consists of at least one cluster master machine and multiple worker machines called nodes. Nodes are Compute Engine virtual machine (VM) instances that run the Kubernetes processes necessary to make them part of the cluster.
+
+```bash
+gcloud container clusters create --machine-type=e2-medium --zone=ZONE lab-cluster
+```
+
+### Get authentication credentials for the cluster
+
+```bash
+gcloud container clusters get-credentials lab-cluster
+```
+
+### Deploy an application to the cluster
+
+1. To **create a new Deployment** `hello-server` from the `hello-app` container image, run the following `kubectl create` command:
+
+```bash
+kubectl create deployment hello-server --image=gcr.io/google-samples/hello-app:1.0
+```
+
+2. To create a Kubernetes Service, which is a Kubernetes resource that lets you expose your application to external traffic, run the following `kubectl expose` command:
+
+```bash
+kubectl expose deployment hello-server --type=LoadBalancer --port 8080
+```
+
+3. To inspect the `hello-server` Service, run `kubectl get`:
+
+```bash
+kubectl get service
+```
+
+4. To view the application from your web browser, open a new tab and enter the following address, replacing `[EXTERNAL IP]` with the `EXTERNAL-IP` for `hello-server`.
+
+```text
+http://[EXTERNAL-IP]:8080
+```
+
+### Delete the cluster
+
+1. To **delete** the cluster, run the following command:
+
+```bash
+gcloud container clusters delete lab-cluster
+```
+
+2. When prompted, type `Y` and press **Enter** to confirm.
+
+Deleting the cluster can take a few minutes.
