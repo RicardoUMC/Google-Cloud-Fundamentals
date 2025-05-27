@@ -93,3 +93,114 @@ The flexible environment supports microservices, authorization, SQL and NoSQL da
 | **Network access**         | Via App Engine services                                                              | Yes                                                                 |
 | **Pricing model**          | After free tier usage, pay per instance class, with automatic shutdown               | Pay for resource allocation per hour; no automatic shutdown         |
 
+## Cloud Run Functions
+
+1. In Cloud Shell, run the following command to set the default region:
+
+```bash
+gcloud config set run/region REGION
+```
+
+2. Create a directory for the function code:
+
+```bash
+mkdir gcf_hello_world && cd $_
+```
+
+3. Create and open `index.js` to edit:
+
+```bash
+vim index.js
+```
+
+4. Copy the following into the `index.js` file:
+
+```js
+const functions = require('@google-cloud/functions-framework');
+
+// Register a CloudEvent callback with the Functions Framework that will
+// be executed when the Pub/Sub trigger topic receives a message.
+functions.cloudEvent('helloPubSub', cloudEvent => {
+    // The Pub/Sub message is passed as the CloudEvent's data payload.
+    const base64name = cloudEvent.data.message.data;
+
+      const name = base64name
+        ? Buffer.from(base64name, 'base64').toString()
+        : 'World';
+
+     console.log(`Hello, ${name}!`);
+});
+```
+
+5. Save and exit (Esc > ZZ)
+
+6. Create and open `package.json` to edit:
+
+7. Copy the following into the `package.json` file:
+
+```json
+{
+    "name": "gcf_hello_world",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+    "@google-cloud/functions-framework": "^3.0.0"
+    }
+}
+```
+
+8. Install the package dependencies
+
+```bash
+npm install
+```
+
+### Deploy your function
+
+1. Deploy the **nodejs-pubsub-function** function to a pub/sub topic named **cf-demo**
+
+```bash
+gcloud functions deploy nodejs-pubsub-function \
+    --gen2 \
+    --runtime=nodejs20 \
+    --region=REGION \
+    --source=. \
+    --entry-point=helloPubSub \
+    --trigger-topic cf-demo \
+    --stage-bucket PROJECT_ID-bucket \
+    --service-account cloudfunctionsa@PROJECT_ID.iam.gserviceaccount.com \
+    --allow-unauthenticated
+```
+
+> **_NOTE:_** If you get a service account serviceAccountTokenCreator notification select "n".
+
+2. Verify the status of the function:
+
+```bash
+gcloud functions describe nodejs-pubsub-function \
+    --region=REGION
+```
+
+### Test the function
+
+Invoke the PubSub with some data.
+
+```bash
+gcloud pubsub topics publish cf-demo --message="Cloud Function Gen2"
+```
+
+### View logs
+
+Check the logs to see your messages in the log history:
+
+```bash
+gcloud functions logs read nodejs-pubsub-function \
+    --region=REGION
+```
+
+> **_NOTE:_** The logs can take around 10 mins to appear. Also, the alternative way to view the logs is, go to **Logging > Logs Explorer**.
+
