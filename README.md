@@ -67,4 +67,29 @@ Based on container instances running on Google's infrastructure. Features includ
 
 ### Flexible Environment
 
-The Flexible Environment allows you to define the type of container your web application runs in. This option enables your app to run inside Docker containers hosted on Google Cloud’s Compute Engine VMs.
+Th#e Flexible Environment allows you to define the type of container your web application runs in. This option enables your app to run inside Docker containers hosted on Google Cloud’s Compute Engine VMs (App Engine manages Compute Engine machines for you). Features include:
+
+* Instances are health-checked, healed as necessary, and colocated with other module instances within the project.
+* Critical, backward-compatible updates are automatically applied to the underlying operating system.
+* VM instances are automatically located by geographical region according to the settings in your project.
+* And VM instances are restarted on a weekly basis.
+
+The flexible environment supports microservices, authorization, SQL and NoSQL databases, traffic splitting, logging, search, versioning, security scanning, Memcache, and content delivery networks.
+
+**Advantages**
+
+1. App Engine flexible environment allows users to also benefit from custom configurations and libraries while still keeping their main focus on what they do best – writing code.
+2. As in the App Engine standard environment, supported runtimes include Python, Java, Go, Node.js, PHP, and Ruby.
+3. Developers can also use different versions of these runtimes or provide their own custom runtime by supplying a custom Docker image or using a Dockerfile from the open source community.
+
+### Comparison
+
+| Feature                     | Standard Environment                                                                 | Flexible Environment                                                |
+|----------------------------|---------------------------------------------------------------------------------------|---------------------------------------------------------------------|
+| **Instance startup**       | Seconds                                                                              | Minutes                                                             |
+| **SSH access**             | No                                                                                   | Yes (although not by default)                                      |
+| **Write to local disk**    | No (some runtimes have read and write access to the `/tmp` directory)                | Yes, ephemeral (disk initialized on each VM startup)               |
+| **Support for 3rd-party binaries** | For certain languages                                                        | Yes                                                                 |
+| **Network access**         | Via App Engine services                                                              | Yes                                                                 |
+| **Pricing model**          | After free tier usage, pay per instance class, with automatic shutdown               | Pay for resource allocation per hour; no automatic shutdown         |
+
