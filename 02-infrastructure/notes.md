@@ -73,13 +73,13 @@ With object versioning enabled, you can list the archived versions of an object,
 * Bucket names cannot contain "google" or close misspellings of "google".
 * Also, for DNS compliance and future compatibility, you should not use underscores (_) or have a period adjacent to another period or dash. For example, ".." or "-." or ".-" are not valid in DNS names.
 
-**Make bucket command:**
+### **Make bucket command:**
 
 ```bash
 gcloud storage buckets create gs://<YOUR-BUCKET-NAME>
 ```
 
-**Upload an object into your bucket:**
+### **Upload an object into your bucket:**
 
 1. To download this image (ada.jpg) into your bucket, enter this command into Cloud Shell:
 
@@ -99,49 +99,49 @@ gcloud storage cp ada.jpg gs://YOUR-BUCKET-NAME
 rm ada.jpg
 ```
 
-**Download an object from your bucket:**
+### **Download an object from your bucket:**
 
 ```bash
 gcloud storage cp -r gs://YOUR-BUCKET-NAME/ada.jpg .
 
 ```
 
-**Copy an object to a folder in the bucket:**
+### **Copy an object to a folder in the bucket:**
 
 ```bash
 gcloud storage cp gs://YOUR-BUCKET-NAME/ada.jpg gs://YOUR-BUCKET-NAME/image-folder/
 
 ```
 
-**List contents of a bucket or folder:**
+### **List contents of a bucket or folder:**
 
 ```bash
 gcloud storage ls gs://YOUR-BUCKET-NAME
 
 ```
 
-**List details for an object:**
+### **List details for an object:**
 
 ```bash
 gcloud storage ls -l gs://YOUR-BUCKET-NAME/ada.jpg
 
 ```
 
-**Make your object publicly accessible:**
+### **Make your object publicly accessible:**
 
 ```bash
 gsutil acl ch -u AllUsers:R gs://YOUR-BUCKET-NAME/ada.jpg
 
 ```
 
-**Remove public access:**
+### **Remove public access:**
 
 ```bash
 gsutil acl ch -d AllUsers gs://YOUR-BUCKET-NAME/ada.jpg
 
 ```
 
-**Delete objects:**
+### **Delete objects:**
 
 ```bash
 gcloud storage rm gs://YOUR-BUCKET-NAME/ada.jpg
