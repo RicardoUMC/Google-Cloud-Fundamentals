@@ -59,3 +59,90 @@ Administrators can either allow each new version to completely overwrite the old
 
 * If you don’t turn on object versioning, by default new versions will always overwrite older versions.
 With object versioning enabled, you can list the archived versions of an object, restore an object to an older state, or permanently delete a version of an object, as needed.
+
+## Creating a bucket
+
+**Bucket naming rules**
+
+* Do not include sensitive information in the bucket name, because the bucket namespace is global and publicly visible.
+* Bucket names must contain only lowercase letters, numbers, dashes (-), underscores (_), and dots (.). Names containing dots require domain verification.
+* Bucket names must start and end with a number or letter.
+* Bucket names must contain 3 to 63 characters. Names containing dots can contain up to 222 characters, but each dot-separated component can be no longer than 63 characters.
+* Bucket names cannot be represented as an IP address in dotted-decimal notation (for example, 192.168.5.4).
+* Bucket names cannot begin with the "goog" prefix.
+* Bucket names cannot contain "google" or close misspellings of "google".
+* Also, for DNS compliance and future compatibility, you should not use underscores (_) or have a period adjacent to another period or dash. For example, ".." or "-." or ".-" are not valid in DNS names.
+
+**Make bucket command:**
+
+```bash
+gcloud storage buckets create gs://<YOUR-BUCKET-NAME>
+```
+
+**Upload an object into your bucket:**
+
+1. To download this image (ada.jpg) into your bucket, enter this command into Cloud Shell:
+
+```bash
+curl https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Ada_Lovelace_portrait.jpg/800px-Ada_Lovelace_portrait.jpg --output ada.jpg
+```
+
+2. Use the `gcloud storage cp` command to upload the image from the location where you saved it to the bucket you created:
+
+```bash
+gcloud storage cp ada.jpg gs://YOUR-BUCKET-NAME
+```
+
+3. Now remove the downloaded image:
+
+```bash
+rm ada.jpg
+```
+
+**Download an object from your bucket:**
+
+```bash
+gcloud storage cp -r gs://YOUR-BUCKET-NAME/ada.jpg .
+
+```
+
+**Copy an object to a folder in the bucket:**
+
+```bash
+gcloud storage cp gs://YOUR-BUCKET-NAME/ada.jpg gs://YOUR-BUCKET-NAME/image-folder/
+
+```
+
+**List contents of a bucket or folder:**
+
+```bash
+gcloud storage ls gs://YOUR-BUCKET-NAME
+
+```
+
+**List details for an object:**
+
+```bash
+gcloud storage ls -l gs://YOUR-BUCKET-NAME/ada.jpg
+
+```
+
+**Make your object publicly accessible:**
+
+```bash
+gsutil acl ch -u AllUsers:R gs://YOUR-BUCKET-NAME/ada.jpg
+
+```
+
+**Remove public access:**
+
+```bash
+gsutil acl ch -d AllUsers gs://YOUR-BUCKET-NAME/ada.jpg
+
+```
+
+**Delete objects:**
+
+```bash
+gcloud storage rm gs://YOUR-BUCKET-NAME/ada.jpg
+```
