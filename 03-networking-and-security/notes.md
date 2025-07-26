@@ -14,6 +14,19 @@
   - [Google Cloud Network](#google-cloud-network)
   - [Routes and Firewall Rules](#routes-and-firewall-rules)
   - [Multiple VPC Networks](#multiple-vpc-networks)
+    - [Multiple VPCs Lab](#multiple-vpcs-lab)
+    - [Create the managementnet Network](#create-the-managementnet-network)
+    - [Create the privatenet Network](#create-the-privatenet-network)
+    - [Create Firewall Rules for Managementnet](#create-firewall-rules-for-managementnet)
+    - [Creating Firewall Rules via Cloud Shell](#creating-firewall-rules-via-cloud-shell)
+    - [Create a VM Instance](#create-a-vm-instance)
+    - [Create she privatenet-vm-1 Instance](#create-she-privatenet-vm-1-instance)
+    - [Explore VM Connectivity](#explore-vm-connectivity)
+      - [Ping External IP Addresses](#ping-external-ip-addresses)
+      - [Ping Internal IP Addresses](#ping-internal-ip-addresses)
+    - [Create a VM Instance with Multiple Network Interfaces](#create-a-vm-instance-with-multiple-network-interfaces)
+  - [Explore Network Interface Details](#explore-network-interface-details)
+  - [Explore Network Connectivity](#explore-network-connectivity)
   - [Building a Hybrid Cloud](#building-a-hybrid-cloud)
   - [Load Balancing Options](#load-balancing-options)
 <!--toc:end-->
@@ -128,7 +141,382 @@ To build robust networking solutions across multiple projects, VPCs can communic
    - Uses internal IPs for secure and efficient communication.
    - Designates a host project to manage the shared VPC, with other projects attached as service projects.
 
+### Multiple VPCs Lab
+
+Create custom mode VPC networks with firewall rules
+Create two custom networks: `managementnet` and `privatenet`, along with firewall rules to allow SSH, ICMP, and RDP ingress traffic.
+
+### Create the managementnet Network
+
+1. Navigate to the **Cloud Console**:
+   - Go to **Navigation menu > VPC network > VPC networks**.
+
+2. Click **Create VPC Network**.
+
+3. Set the following properties:
+   - **Name**: `managementnet`
+   - **Subnet creation mode**: `Custom`
+
+4. Configure the subnet:
+   - **Name**: `managementsubnet-1`
+   - **Region**: `us-central1`
+   - **IPv4 range**: `10.130.0.0/20`
+
+5. Click **Done**.
+
+6. Click **Close**.
+
+7. Click **Create**.
+
+### Create the privatenet Network
+
+1. **Create the privatenet network**:
+
+   ```bash
+   gcloud compute networks create privatenet --subnet-mode=custom
+   ```
+
+2. **Create the privatesubnet-1 subnet**:
+
+   ```bash
+   gcloud compute networks subnets create privatesubnet-1 --network=privatenet --region=us-central1 --range=172.16.0.0/24
+   ```
+
+3. **Create the privatesubnet-2 subnet**:
+
+   ```bash
+   gcloud compute networks subnets create privatesubnet-2 --network=privatenet --region=asia-southeast1 --range=172.20.0.0/20
+   ```
+
+4. **List the available VPC networks**:
+
+   ```bash
+   gcloud compute networks list
+   ```
+
+   - The output should display the default, managementnet, and privatenet networks, with their respective modes and configurations.
+
+5. **List the available VPC subnets (sorted by VPC network)**:
+
+   ```bash
+   gcloud compute networks subnets list --sort-by=NETWORK
+   ```
+
+   - The output will show subnets for each network, including the custom subnets created for managementnet and privatenet.
+
+### Create Firewall Rules for Managementnet
+
+1. **Navigate to Firewall Settings in the Cloud Console**:
+   - Go to **Navigation menu > VPC network > Firewall**.
+
+2. **Create a New Firewall Rule**:
+   - Click **+ Create Firewall Rule**.
+
+3. **Set Basic Rule Properties**:
+   - **Name**: Provide a unique name (e.g., `managementnet-allow-icmp-ssh-rdp`).
+   - **Network**: Select the target VPC network (e.g., `managementnet`).
+   - **Targets**: Choose the instances to apply the rule (e.g., `All instances in the network`).
+
+4. **Define Source and Protocols**:
+   - **Source filter**: Select `IPv4 Ranges`.
+   - **Source IPv4 ranges**: Enter the desired range (e.g., `0.0.0.0/0`).
+   - **Protocols and ports**: Specify allowed protocols and ports:
+     - Check **tcp**, type `22, 3389`.
+     - Check **Other protocols**, type `icmp`.
+
+5. **Generate Equivalent Command Line (Optional)**:
+   - Click **EQUIVALENT COMMAND LINE** to view the corresponding gcloud command.
+
+6. **Finalize Creation**:
+   - Click **Close** to exit the command line preview.
+   - Click **Create** to save the rule.
+
+### Creating Firewall Rules via Cloud Shell
+
+1. **Open Cloud Shell**:
+   - Click the **Cloud Shell** icon in the Google Cloud Console.
+
+2. **Run the Command to Create a Firewall Rule**:
+   - Use the following command format:
+     ```bash
+     gcloud compute firewall-rules create RULE_NAME \
+     --direction=INGRESS \
+     --priority=1000 \
+     --network=NETWORK_NAME \
+     --action=ALLOW \
+     --rules=PROTOCOLS_AND_PORTS \
+     --source-ranges=SOURCE_RANGES
+     ```
+   - Example for `privatenet`:
+     ```bash
+     gcloud compute firewall-rules create privatenet-allow-icmp-ssh-rdp \
+     --direction=INGRESS \
+     --priority=1000 \
+     --network=privatenet \
+     --action=ALLOW \
+     --rules=icmp,tcp:22,tcp:3389 \
+     --source-ranges=0.0.0.0/0
+     ```
+
+3. **Verify the Creation**:
+   - Run the following command to list all firewall rules, sorted by the VPC network:
+     ```bash
+     gcloud compute firewall-rules list --sort-by=NETWORK
+     ```
+
+4. **Review the Output**:
+   - Ensure the newly created rule is listed with the correct properties.
+
+> [!NOTE]
+>
+> - Multiple protocols and ports can be combined in a single rule or spread across multiple rules.
+> - Firewall rules can be managed through the Cloud Console or Cloud Shell for flexibility.
+
+### Create a VM Instance
+
+1. **Open Cloud Console**:
+   - Navigate to **Navigation menu > Compute Engine > VM instances**.
+
+2. **Create a New Instance**:
+   - Click **Create Instance**.
+
+3. **Configure Machine Settings**:
+   - Set the following values, leaving all other values at their defaults:
+     - **Name**: `managementnet-vm-1`
+     - **Region**: `us-central1`
+     - **Zone**: `us-central1-b`
+     - **Series**: `E2`
+     - **Machine Type**: `e2-micro`
+
+4. **Configure Networking Settings**:
+   - Click on the dropdown to edit **Network interfaces**.
+   - Set the following values:
+     - **Network**: `managementnet`
+     - **Subnetwork**: `managementsubnet-1`
+   - Click **Done**.
+
+5. **Create the Instance**:
+   - Click **Create** to finalize the creation of the `managementnet-vm-1` instance.
+
+### Create she privatenet-vm-1 Instance
+
+1. **Create the Instance Using Cloud Shell**:
+
+   ```bash
+   gcloud compute instances create privatenet-vm-1 \
+       --zone=<ZONE> \
+       --machine-type=e2-micro \
+       --subnet=privatesubnet-1
+   ```
+
+2. **Expected Output**:
+
+   ```
+   Created [https://www.googleapis.com/compute/v1/projects/<PROJECT_ID>/zones/<ZONE>/instances/privatenet-vm-1].
+   NAME: privatenet-vm-1
+   ZONE: <ZONE>
+   MACHINE_TYPE: e2-micro
+   INTERNAL_IP: 172.16.0.2
+   EXTERNAL_IP: <EXTERNAL_IP>
+   STATUS: RUNNING
+   ```
+
+3. **Verify Progress**:
+   - Click **Check my progress** to verify the creation of the VM instance.
+
+4. **List All VM Instances**:
+   ```bash
+   gcloud compute instances list --sort-by=ZONE
+   ```
+
+### Explore VM Connectivity
+
+#### Ping External IP Addresses
+
+1. **Navigate to VM Instances**:
+   - Open **Navigation menu > Compute Engine > VM instances**.
+   - Note the external IPs of the desired VMs.
+
+2. **Test Connectivity**:
+   - SSH into a VM (e.g., `mynet-vm-1`) and run:
+     ```bash
+     ping -c 3 <EXTERNAL_IP>
+     ```
+   - Repeat for each instance.
+
+#### Ping Internal IP Addresses
+
+1. **Note Internal IPs**:
+   - Navigate to **Compute Engine > VM instances** and note the internal IPs.
+
+2. **Test Connectivity**:
+   - SSH into a VM (e.g., `mynet-vm-1`) and run:
+     ```bash
+     ping -c 3 <INTERNAL_IP>
+     ```
+   - Observe packet loss to determine connectivity:
+     - Same VPC network: Should work.
+     - Different VPC networks: Will not work unless VPC peering or VPN is configured.
+
+### Create a VM Instance with Multiple Network Interfaces
+
+1. **Create the VM**:
+   - Navigate to **Compute Engine > VM instances** and click **Create Instance**.
+   - Configure the following:
+     - **Name**: `vm-appliance`
+     - **Region**: `<US_Region>`
+     - **Zone**: `<US_Zone>`
+     - **Series**: `E2`
+     - **Machine Type**: `e2-standard-4`
+
+2. **Add Network Interfaces**:
+   - **Interface 1**:
+     - **Network**: `privatenet`
+     - **Subnetwork**: `privatesubnet-1`
+   - **Interface 2**:
+     - **Network**: `managementnet`
+     - **Subnetwork**: `managementsubnet-1`
+   - **Interface 3**:
+     - **Network**: `mynetwork`
+     - **Subnetwork**: `mynetwork`
+
+3. **Finalize**:
+   - Click **Create**.
+
+## Explore Network Interface Details
+
+1. **Interface Overview**:
+   - Navigate to **Compute Engine > VM instances** and click on the VM.
+   - Select each interface (e.g., `nic0`, `nic1`) to view details.
+
+2. **Verify Internal IP Assignments**:
+   - Confirm that each network interface is assigned an IP within its respective subnet.
+
+3. **List Network Interfaces via SSH**:
+   ```bash
+   sudo ifconfig
+   ```
+
+## Explore Network Connectivity
+
+1. **Ping Other Instances**:
+   - SSH into the VM with multiple interfaces (e.g., `vm-appliance`).
+   - Test connectivity to instances in different subnets:
+     ```bash
+     ping -c 3 <INTERNAL_IP>
+     ```
+
+2. **Resolve Hostnames**:
+   - Use DNS instead of IPs for VMs in the same VPC:
+     ```bash
+     ping -c 3 <INSTANCE_NAME>
+     ```
+
+3. **List Routes**:
+
+   ```bash
+   ip route
+   ```
+
+   - Verify that traffic to other subnets is routed via the appropriate interface.
+
+> [!NOTE]
+>
+> - Internal communication between VMs in different VPCs requires additional configuration (e.g., VPC peering or VPN).
+> - By default, traffic leaving a VM uses the primary interface (`eth0`) unless manually configured.
+
+## Controlling VPC Network Access
+
+### Create the web servers
+
+1. **Create the blue server**  
+   - Navigate to **Compute Engine > VM instances**.  
+   - Click **Create Instance**.  
+     - **Name**: `blue`  
+     - **Network tags**: `web-server`  
+   - Click **Create**.
+
+2. **Create the green server**  
+   - Navigate to **Compute Engine > VM instances**.  
+   - Click **Create Instance**.  
+     - **Name**: `green`  
+   - Click **Create**.
+
+3. **Install nginx and customize welcome pages**  
+   - SSH into `blue` and `green`.  
+   - Install nginx:  
+     ```bash
+     sudo apt-get install nginx-light -y
+     ```  
+   - Edit the welcome page:  
+     ```bash
+     sudo nano /var/www/html/index.nginx-debian.html
+     ```  
+     - Replace `<h1>Welcome to nginx!</h1>` with:  
+       - `blue`: `<h1>Welcome to the blue server!</h1>`  
+       - `green`: `<h1>Welcome to the green server!</h1>`  
+   - Save and verify:  
+     ```bash
+     cat /var/www/html/index.nginx-debian.html
+     ```
+
+### Create the firewall rule
+
+1. **Create the tagged firewall rule**  
+   - Navigate to **VPC network > Firewall** and click **Create Firewall Rule**.  
+     - **Name**: `allow-http-web-server`  
+     - **Network**: `default`  
+     - **Target tags**: `web-server`  
+     - **Source IPv4 ranges**: `0.0.0.0/0`  
+     - **Protocols and ports**:  
+       - `tcp:80`  
+       - `icmp`  
+   - Click **Create**.
+
+2. **Create a test-vm**  
+   - Open **Cloud Shell** and run:  
+     ```bash
+     gcloud compute instances create test-vm --machine-type=e2-micro --subnet=default --zone=ZONE
+     ```
+
+3. **Test HTTP connectivity**  
+   - SSH into `test-vm` and test connectivity:  
+     ```bash
+     curl <blue_internal_IP>
+     curl <green_internal_IP>
+     curl <blue_external_IP>
+     curl <green_external_IP>
+     ```
+
+### Explore the Network and Security Admin roles
+
+1. **Verify current permissions**  
+   - SSH into `test-vm` and try:  
+     ```bash
+     gcloud compute firewall-rules list
+     gcloud compute firewall-rules delete allow-http-web-server
+     ```
+
+2. **Create a service account**  
+   - Navigate to **IAM & admin > Service Accounts**.  
+   - Create a service account:  
+     - **Name**: `Network-admin`  
+     - **Role**: `Compute Network Admin`  
+   - Download the JSON key and rename it to `credentials.json`.  
+   - Upload to `test-vm` and authenticate:  
+     ```bash
+     gcloud auth activate-service-account --key-file credentials.json
+     ```
+
+3. **Update service account to Security Admin**  
+   - Navigate to **IAM & admin > IAM**.  
+   - Update `Network-admin` role to `Compute Security Admin`.  
+   - Verify and delete the firewall rule:  
+     ```bash
+     gcloud compute firewall-rules list
+     gcloud compute firewall-rules delete allow-http-web-server
+     ```
+
 ## Building a Hybrid Cloud
 
 ## Load Balancing Options
-
