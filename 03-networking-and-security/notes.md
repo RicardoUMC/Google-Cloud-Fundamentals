@@ -14,7 +14,7 @@
   - [Google Cloud Network](#google-cloud-network)
   - [Routes and Firewall Rules](#routes-and-firewall-rules)
   - [Multiple VPC Networks](#multiple-vpc-networks)
-    - [Multiple VPCs Lab](#multiple-vpcs-lab)
+    - [Multiple VPCs Lab 🚀](#multiple-vpcs-lab-🚀)
     - [Create the managementnet Network](#create-the-managementnet-network)
     - [Create the privatenet Network](#create-the-privatenet-network)
     - [Create Firewall Rules for Managementnet](#create-firewall-rules-for-managementnet)
@@ -36,12 +36,37 @@
   - [Load Balancing Options](#load-balancing-options)
     - [Key Features of Cloud Load Balancing:](#key-features-of-cloud-load-balancing)
     - [Types of Load Balancers:](#types-of-load-balancers)
-  - [Application Load Balancing](#application-load-balancing)
+  - [Application Load Balancing Lab 🚀](#application-load-balancing-lab-🚀)
     - [Configure HTTP and health check firewall rules](#configure-http-and-health-check-firewall-rules)
     - [Configure instance templates and create instance groups](#configure-instance-templates-and-create-instance-groups)
     - [Configure the application load balancer](#configure-the-application-load-balancer)
     - [Test the application load balancer](#test-the-application-load-balancer)
     - [Denylist the siege-vm](#denylist-the-siege-vm)
+  - [Infrastructure as Code (IaC)](#infrastructure-as-code-iac)
+  - [Terraform](#terraform)
+    - [Key Features of Terraform:](#key-features-of-terraform)
+    - [How Terraform Works:](#how-terraform-works)
+  - [Monitoring and Managing Services, Applications, and Infrastructure](#monitoring-and-managing-services-applications-and-infrastructure)
+    - [Key Aspects of Monitoring:](#key-aspects-of-monitoring)
+    - [Reliability Best Practices:](#reliability-best-practices)
+  - [Google Cloud Observability](#google-cloud-observability)
+    - [Monitoring](#monitoring)
+    - [Logging](#logging)
+    - [Log Categories](#log-categories)
+    - [Error Reporting](#error-reporting)
+    - [Cloud Trace](#cloud-trace)
+    - [Cloud Profiler](#cloud-profiler)
+  - [Cloud Monitoring Lab 🚀](#cloud-monitoring-lab-🚀)
+    - [Create a Compute Engine Instance](#create-a-compute-engine-instance)
+    - [Install Apache2 HTTP Server](#install-apache2-http-server)
+    - [Install Monitoring and Logging Agents](#install-monitoring-and-logging-agents)
+      - [Install the Cloud Monitoring Agent](#install-the-cloud-monitoring-agent)
+      - [Install the Cloud Logging Agent](#install-the-cloud-logging-agent)
+    - [Create an Uptime Check](#create-an-uptime-check)
+    - [Create an Alerting Policy](#create-an-alerting-policy)
+    - [Create a Dashboard and Charts](#create-a-dashboard-and-charts)
+    - [View Logs](#view-logs)
+    - [Verify Uptime and Alerts](#verify-uptime-and-alerts)
 <!--toc:end-->
 
 ---
@@ -49,8 +74,6 @@
 ## Networking
 
 Networking in Google Cloud refers to the backbone infrastructure that facilitates communication between different resources, services, and users. It includes Virtual Private Cloud (VPC), load balancing, hybrid connectivity, and security features to ensure reliable and secure data transfer. Google Cloud's networking solutions are designed to offer scalability, performance, and global reach.
-
----
 
 ### Content Delivery and Load Balancing Flow
 
@@ -75,8 +98,6 @@ Networking in Google Cloud refers to the backbone infrastructure that facilitate
    - Cloud Load Balancing picks an appropriate frontend server to serve the request.
    - The page is then returned to the user.
 
----
-
 ### Google Cloud Network Overview
 
 - In Google Cloud, a **"network"** is an isolated global resource holding network configurations.
@@ -89,15 +110,11 @@ Networking in Google Cloud refers to the backbone infrastructure that facilitate
 
 A Virtual Private Cloud (VPC) is a secure, private cloud-computing model hosted within a public cloud, combining the scalability of public cloud computing with the data isolation of private cloud computing. VPC networks connect Google Cloud resources to each other and the internet, allowing segmentation, firewall rules, and static routes.
 
----
-
 ### Key Features of Google Cloud VPC:
 
 - **Global Scope**: VPCs are global, with subnets spanning zones within a region.
 - **Subnet Flexibility**: Subnet sizes can be expanded without affecting existing virtual machines.
 - **Resilience**: Resources in different zones can reside on the same subnet, enabling robust yet simple network designs.
-
----
 
 ### Types of VPC Networks:
 
@@ -122,16 +139,12 @@ A Virtual Private Cloud (VPC) consists of subnetworks (subnets), each configured
 
 IPv4 addresses are 32 bits long, segmented into octets. The CIDR suffix determines the number of available IP addresses (e.g., a /16 range provides 65,536 IPs, halving with each increment).
 
----
-
 ### Public IPs
 
 - Can be **ephemeral** or **reserved**.
 - Allocated from regional IP pools.
 - Reserved IPs incur charges if not attached to a VM.
 - VMs are unaware of their public IPs and display only internal IPs in their network configuration.
-
----
 
 ### Internal IPs
 
@@ -178,14 +191,10 @@ To build robust networking solutions across multiple projects, VPCs can communic
    - Uses internal IPs for secure and efficient communication.
    - Designates a host project to manage the shared VPC, with other projects attached as service projects.
 
----
-
-### Multiple VPCs Lab
+### Multiple VPCs Lab 🚀
 
 Create custom mode VPC networks with firewall rules
 Create two custom networks: `managementnet` and `privatenet`, along with firewall rules to allow SSH, ICMP, and RDP ingress traffic.
-
----
 
 ### Create the managementnet Network
 
@@ -208,8 +217,6 @@ Create two custom networks: `managementnet` and `privatenet`, along with firewal
 6. Click **Close**.
 
 7. Click **Create**.
-
----
 
 ### Create the privatenet Network
 
@@ -247,8 +254,6 @@ Create two custom networks: `managementnet` and `privatenet`, along with firewal
 
    - The output will show subnets for each network, including the custom subnets created for managementnet and privatenet.
 
----
-
 ### Create Firewall Rules for Managementnet
 
 1. **Navigate to Firewall Settings in the Cloud Console**:
@@ -275,8 +280,6 @@ Create two custom networks: `managementnet` and `privatenet`, along with firewal
 6. **Finalize Creation**:
    - Click **Close** to exit the command line preview.
    - Click **Create** to save the rule.
-
----
 
 ### Creating Firewall Rules via Cloud Shell
 
@@ -319,8 +322,6 @@ Create two custom networks: `managementnet` and `privatenet`, along with firewal
 > - Multiple protocols and ports can be combined in a single rule or spread across multiple rules.
 > - Firewall rules can be managed through the Cloud Console or Cloud Shell for flexibility.
 
----
-
 ### Create a VM Instance
 
 1. **Open Cloud Console**:
@@ -346,8 +347,6 @@ Create two custom networks: `managementnet` and `privatenet`, along with firewal
 
 5. **Create the Instance**:
    - Click **Create** to finalize the creation of the `managementnet-vm-1` instance.
-
----
 
 ### Create she privatenet-vm-1 Instance
 
@@ -396,8 +395,6 @@ Create two custom networks: `managementnet` and `privatenet`, along with firewal
      ping -c 3 <EXTERNAL_IP>
      ```
    - Repeat for each instance.
-
----
 
 #### Ping Internal IP Addresses
 
@@ -492,8 +489,6 @@ Create two custom networks: `managementnet` and `privatenet`, along with firewal
 
 In the real-world you need to protect sensitive data and ensure the continued availability of your web applications at all times. Learn how to use the Google Cloud VPC network to create a more secure, scalable, and manageable web server deployment within your Google Cloud environment.
 
----
-
 ### Create the web servers
 
 1. **Create the blue server**
@@ -530,8 +525,6 @@ In the real-world you need to protect sensitive data and ensure the continued av
      cat /var/www/html/index.nginx-debian.html
      ```
 
----
-
 ### Create the firewall rule
 
 1. **Create the tagged firewall rule**
@@ -559,8 +552,6 @@ In the real-world you need to protect sensitive data and ensure the continued av
      curl <blue_external_IP>
      curl <green_external_IP>
      ```
-
----
 
 ### Explore the Network and Security Admin roles
 
@@ -597,8 +588,6 @@ In the real-world you need to protect sensitive data and ensure the continued av
 
 Many Google Cloud customers want to connect their Google Virtual Private Clouds to other networks in their system, such as on-premises networks or networks in other clouds.
 
----
-
 ### Options for Building a Hybrid Cloud
 
 Each option offers different levels of security, performance, and reliability to match varying business needs:
@@ -619,15 +608,11 @@ Each option offers different levels of security, performance, and reliability to
 
 Cloud Load Balancing is a fully distributed, software-defined, managed service for handling all your traffic. It eliminates the need for scaling or managing load balancers as they do not run on VMs.
 
----
-
 ### Key Features of Cloud Load Balancing:
 
 - **Traffic Types**: Supports HTTP(S), other TCP and SSL traffic, and UDP traffic.
 - **Cross-Region Load Balancing**: Includes automatic failover and adapts to backend health, ensuring minimal disruption.
 - **No Pre-Warming Required**: Automatically handles traffic spikes without advance notice.
-
----
 
 ### Types of Load Balancers:
 
@@ -644,7 +629,7 @@ Cloud Load Balancing is a fully distributed, software-defined, managed service f
 
 ---
 
-## Application Load Balancing
+## Application Load Balancing Lab 🚀
 
 ### Configure HTTP and health check firewall rules
 
@@ -675,8 +660,6 @@ Cloud Load Balancing is a fully distributed, software-defined, managed service f
    - **Protocols and ports**: `tcp`
 
 7. Click **Create** to finalize the health check firewall rule.
-
----
 
 ### Configure instance templates and create instance groups
 
@@ -719,8 +702,6 @@ Cloud Load Balancing is a fully distributed, software-defined, managed service f
     - **Name**: `region-2-mig`
     - **Instance template**: `region-2-template`
     - **Region**: `Region 2`.
-
----
 
 ### Configure the application load balancer
 
@@ -771,8 +752,6 @@ Cloud Load Balancing is a fully distributed, software-defined, managed service f
 
 11. Click **Create** to finalize the load balancer setup.
 
----
-
 ### Test the application load balancer
 
 1. Note the IPv4 and IPv6 addresses of the load balancer.
@@ -813,8 +792,6 @@ Cloud Load Balancing is a fully distributed, software-defined, managed service f
    - Go to **Load Balancing > Monitoring Tab** in the Google Cloud Console.
    - Verify that traffic is distributed across the backend instances as expected.
 
----
-
 ### Denylist the siege-vm
 
 1. Note the external IP of `siege-vm`.
@@ -851,3 +828,222 @@ Cloud Load Balancing is a fully distributed, software-defined, managed service f
      curl http://[LOAD_BALANCER_IP]
      ```
    - Confirm that the response is denied with a `403 Forbidden` error.
+
+## Infrastructure as Code (IaC)
+
+- **Definition**:
+  - IaC defines infrastructure requirements as code, enabling automation and consistency.
+
+- **Key Features**:
+  - Templates are human-readable and machine-consumable configuration files.
+  - IaC tools automate the creation, update, and deletion of infrastructure components.
+
+- **Advantages**:
+  - Simplifies environment setup without manual intervention.
+  - Facilitates cloning and updating of environments.
+  - Supports disaster recovery by enabling automated rebuilding of infrastructure.
+  - Allows version control and collaboration by storing templates in repositories.
+
+---
+
+## Terraform
+
+Terraform is an open-source Infrastructure as Code (IaC) tool that simplifies and automates the provisioning of Google Cloud resources using templates.
+
+### Key Features of Terraform:
+
+- **Templates**:
+  - Written in HashiCorp Configuration Language (HCL) to describe the desired state of your infrastructure.
+  
+- **Automation**:
+  - Templates automate the setup, update, and teardown of infrastructure components.
+
+- **Consistency**:
+  - Deployment actions, updates, and deletions are repeatable with predictable results.
+
+- **Version Control**:
+  - Templates can be stored and version-controlled in repositories like Cloud Source Repositories.
+
+### How Terraform Works:
+
+- **Template Definition**:
+  - Define infrastructure components using HCL templates.
+  
+- **Action Determination**:
+  - Terraform evaluates the template and determines the necessary actions to create or modify the environment.
+
+- **Change Management**:
+  - Update the template to reflect desired changes and apply them using Terraform.
+
+- **Resource API Interaction**:
+  - Terraform interacts with Google Cloud APIs to deploy resources such as:
+    - Instances
+    - Instance templates and groups
+    - VPC networks
+    - Firewall rules
+    - VPN tunnels
+    - Cloud Routers
+    - Load balancers
+
+- **Deployment Lifecycle**:
+  - Deployments can be repeated as needed for consistent results or removed entirely with a single command.
+
+- **Third-Party Tool Support**:
+   - In addition to Terraform, Google Cloud supports other third-party open-source IaC tools.
+
+By leveraging Terraform, you can efficiently manage infrastructure with a declarative approach, reducing manual effort and ensuring consistency across environments.
+
+---
+
+## Monitoring and Managing Services, Applications, and Infrastructure
+
+Monitoring ensures product reliability by identifying urgent issues, analyzing trends, and improving capacity planning. It enhances client experience and minimizes disruptions.
+
+### Key Aspects of Monitoring:
+- **Definition**: As per Google's SRE book ([SRE Books](https://landing.google.com/sre/books)), monitoring involves collecting, processing, aggregating, and displaying real-time data about:
+  - Query and error counts/types
+  - Processing times
+  - Server lifetimes
+- **Benefits**:
+  - Ensure system operations
+  - Trend analysis and dashboard creation
+  - Alert personnel on SLO violations
+  - Incident response and root cause identification
+
+### Reliability Best Practices:
+- **Capacity Planning**: Deploy into environments with sufficient capacity for anticipated loads.
+- **Automated Testing**: Ensures thorough evaluation of systems.
+- **CI/CD Pipelines**: Refined workflows for continuous deployment.
+- **Blameless Postmortems**: Analyze incidents to prevent recurrence and build trust with transparency.
+
+---
+
+## Google Cloud Observability
+
+Google Cloud Observability provides tools for monitoring, logging, error reporting, and debugging cloud applications. It offers insights into health, performance, and availability to identify and resolve issues faster.
+
+### Monitoring
+- Tracks signal data like CPU usage, memory, and uptime.
+- Collects over 1,000 metric streams by default for dashboards, alerts, and trend analysis.
+- Supports custom metrics via OpenTelemetry.
+
+### Logging
+- **Analyze**: Integrated Logs Explorer for log analysis.
+- **Export**: Export logs to Cloud Storage, BigQuery, or Pub/Sub for extended analysis.
+- **Retain**: Supports logs-based metrics for dashboards and alerts.
+
+### Log Categories
+1. **Audit Logs**: Tracks activity (e.g., "Who did what, where, and when?").
+2. **Agent Logs**: Captures instance logs using Fluentd.
+3. **Network Logs**: Records VPC flow logs, firewall rules, and NAT gateway activity.
+4. **Service Logs**: Logs application output from services like Cloud Run.
+
+### Error Reporting
+- Aggregates and analyzes crashes (e.g., unhandled exceptions).
+- Displays error trends, timestamps, and stack traces.
+- Allows alert creation for new errors.
+
+### Cloud Trace
+- Provides latency data for distributed applications.
+- Analyzes traces for performance insights and identifies degradations.
+
+### Cloud Profiler
+- Offers real-time CPU and heap usage insights.
+- Uses low-impact instrumentation for production systems.
+- Supports Java, Go, Python, and Node.js.
+
+---
+
+## Cloud Monitoring Lab 🚀
+
+### Create a Compute Engine Instance
+1. Go to **Compute Engine > VM Instances**, click **Create instance**.
+2. Configure:
+   - **Name**: `lamp-1-vm`
+   - **Region/Zone**: `<REGION>/<ZONE>`
+   - **Series**: `E2`
+   - **Machine**: `e2-medium`
+   - **Boot Disk**: Debian GNU/Linux 12 (bookworm)
+   - **Firewall**: Allow HTTP traffic
+3. Click **Create** and wait for the instance to launch.
+
+### Install Apache2 HTTP Server
+1. Click **SSH** next to `lamp-1-vm`.
+2. Run:
+   ```bash
+   sudo apt-get update
+   sudo apt-get install apache2 php7.0 -y
+   sudo service apache2 restart
+   ```
+   *Use `php5` if `php7.0` is unavailable.*
+3. Visit the **External IP** of `lamp-1-vm` in your browser to confirm the setup.
+
+### Install Monitoring and Logging Agents
+
+Agents collect system and application metrics from VM instances and send them to Cloud Monitoring and Logging for analysis.
+
+#### Install the Cloud Monitoring Agent
+1. SSH into your VM instance.
+2. Run the following commands:
+   ```bash
+   curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
+   sudo bash add-google-cloud-ops-agent-repo.sh --also-install
+   ```
+3. If prompted, enter `Y` to continue.
+
+#### Install the Cloud Logging Agent
+1. Verify the status of the Cloud Ops agent:
+   ```bash
+   sudo systemctl status google-cloud-ops-agent*
+   ```
+   Press `q` to exit the status view.
+2. Update the package list:
+   ```bash
+   sudo apt-get update
+   ```
+
+It is recommended to run the Cloud Ops agent on all your VM instances for comprehensive monitoring and logging.
+
+### Create an Uptime Check
+1. Go to **Monitoring > Uptime Checks**, click **Create Uptime Check**.
+2. Configure:
+   - **Protocol**: HTTP
+   - **Resource Type**: Instance
+   - **Instance**: `lamp-1-vm`
+   - **Check Frequency**: 1 minute
+   - **Title**: Lamp Uptime Check
+3. Test the connection, then click **Create**.
+
+### Create an Alerting Policy
+1. Go to **Monitoring > Alerting**, click **+Create Policy**.
+2. Choose:
+   - **Metric**: `VM instance > Interface > Network traffic`
+   - **Threshold**: Above `500`
+   - **Retest Window**: 1 minute
+3. Add Notification Channel:
+   - Go to **Manage Notification Channels**, add your email, and save.
+   - Refresh and select the email under **Notification Channels**.
+4. Add **Alert Name**: Inbound Traffic Alert.
+5. Review and click **Create Policy**.
+
+### Create a Dashboard and Charts
+1. Go to **Monitoring > Dashboards**, click **+Create Custom Dashboard**.
+2. Name it: `Cloud Monitoring LAMP Dashboard`.
+3. Add widgets:
+   - **CPU Load**:
+     - Metric: `VM instance > Cpu > CPU load (1m)`
+   - **Received Packets**:
+     - Metric: `VM instance > Instance > Received packets`
+
+### View Logs
+1. Go to **Logging > Logs Explorer**.
+2. Select:
+   - **Resource**: `VM Instance > lamp-1-vm`
+3. View logs to see instance activities.
+4. Test stopping/restarting the instance under **Compute Engine > VM Instances**.
+
+### Verify Uptime and Alerts
+1. Go to **Monitoring > Uptime checks**, confirm `Lamp Uptime Check` status.
+2. Go to **Monitoring > Alerting**, verify any triggered alerts.
+3. Check your email for alert notifications.
+4. Remove email notifications to avoid further alerts.
