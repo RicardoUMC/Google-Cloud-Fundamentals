@@ -7,7 +7,7 @@
     - [2. Dataflow](#2-dataflow)
     - [3. BigQuery](#3-bigquery)
   - [Dataproc](#dataproc)
-    - [Key Features](#key-features)
+    - [Dataproc Features](#dataproc-features)
     - [Use Cases](#use-cases)
   - [Dataproc Lab 🚀](#dataproc-lab-🚀)
     - [Enable Cloud Dataproc API](#enable-cloud-dataproc-api)
@@ -21,6 +21,22 @@
     - [Create a Cluster](#create-a-cluster)
     - [Submit a Job](#submit-a-job)
     - [Update a Cluster](#update-a-cluster)
+  - [Build extract, transform, and load (ETL) pipelines with Dataproc](#build-extract-transform-and-load-etl-pipelines-with-dataproc)
+    - [ETL Features](#etl-features)
+    - [Integration](#integration)
+    - [Challenges in ETL Pipelines](#challenges-in-etl-pipelines)
+  - [Templates Lab 🚀](#templates-lab-🚀)
+    - [Re-enable Dataflow API](#re-enable-dataflow-api)
+    - [Create BigQuery Dataset, Table, and Cloud Storage Bucket (Cloud Shell)](#create-bigquery-dataset-table-and-cloud-storage-bucket-cloud-shell)
+      - [Create BigQuery Dataset](#create-bigquery-dataset)
+      - [Create BigQuery Table](#create-bigquery-table)
+      - [Create Cloud Storage Bucket](#create-cloud-storage-bucket)
+    - [Create BigQuery Dataset, Table, and Cloud Storage Bucket (Console)](#create-bigquery-dataset-table-and-cloud-storage-bucket-console)
+      - [Create BigQuery Dataset (Console)](#create-bigquery-dataset-console)
+      - [Create BigQuery Table](#create-bigquery-table)
+      - [Create Cloud Storage Bucket (Console)](#create-cloud-storage-bucket-console)
+    - [Run the Pipeline](#run-the-pipeline)
+    - [Submit a Query](#submit-a-query)
 <!--toc:end-->
 
 ## Managed Services Google offers
@@ -50,7 +66,7 @@ Dataproc is a managed Spark and Hadoop service on Google Cloud, ideal for runnin
 
 ---
 
-### Key Features
+### Dataproc Features
 
 - **Cost-Effective**: Priced at 1 cent per virtual CPU per cluster per hour. Supports preemptible instances for lower costs.
 - **Fast and Scalable**: Clusters start, scale, and shut down in under 90 seconds. Supports various VM types, disk sizes, and networking options.
@@ -213,7 +229,7 @@ Dataflow is a Google Cloud managed service designed for large-scale batch and st
 
 ---
 
-### Key Features
+### ETL Features
 
 - **Stream & Batch Processing**: Supports both streaming and batch data processing.
 - **Fully Managed**: Automates resource management, scaling, and performance optimization.
@@ -283,12 +299,12 @@ Dataflow simplifies these challenges by offering a fully managed, scalable, and 
 
 ### Create BigQuery Dataset, Table, and Cloud Storage Bucket (Console)
 
-#### Create BigQuery Dataset
+#### Create BigQuery Dataset (Console)
 1. Go to **BigQuery** > **Create dataset**.
 2. Set **Dataset ID** to `taxirides` and **Location** to `us`.
 3. Click **Create Dataset**.
 
-#### Create BigQuery Table
+#### Create BigQuery Table (Console)
 1. Open **taxirides dataset** > **Create Table**.
 2. Set **Table Name** to `realtime`.
 3. Add schema (Edit as text):
@@ -298,7 +314,7 @@ Dataflow simplifies these challenges by offering a fully managed, scalable, and 
    ```
 4. Click **Create Table**.
 
-#### Create Cloud Storage Bucket
+#### Create Cloud Storage Bucket (Console)
 1. Navigate to **Cloud Storage** > **Buckets** > **Create Bucket**.
 2. Use your **Project ID** as the bucket name.
 3. Click **Create**.
