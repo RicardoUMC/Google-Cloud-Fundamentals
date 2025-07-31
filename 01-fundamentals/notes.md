@@ -176,7 +176,8 @@ gcloud functions deploy nodejs-pubsub-function \
     --allow-unauthenticated
 ```
 
-> **_NOTE:_** If you get a service account serviceAccountTokenCreator notification select "n".
+> [!NOTE]
+> If you get a service account serviceAccountTokenCreator notification select "n".
 
 2. Verify the status of the function:
 
@@ -202,7 +203,8 @@ gcloud functions logs read nodejs-pubsub-function \
     --region=REGION
 ```
 
-> **_NOTE:_** The logs can take around 10 mins to appear. Also, the alternative way to view the logs is, go to **Logging > Logs Explorer**.
+> [!NOTE]
+> The logs can take around 10 mins to appear. Also, the alternative way to view the logs is, go to **Logging > Logs Explorer**.
 
 ## Google Kubernetes Engine
 
