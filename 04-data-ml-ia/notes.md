@@ -39,11 +39,23 @@
     - [5. Submit a Query](#5-submit-a-query)
   - [Dataflow Python Lab 🚀](#dataflow-python-lab-🚀)
     - [1. Create a Cloud Storage Bucket](#1-create-a-cloud-storage-bucket)
-      - [Verify:](#verify)
     - [2. Install Apache Beam SDK for Python](#2-install-apache-beam-sdk-for-python)
     - [3. Run a Dataflow Pipeline Remotely](#3-run-a-dataflow-pipeline-remotely)
     - [4. Verify Dataflow Job Success](#4-verify-dataflow-job-success)
-      - [Verify:](#verify)
+  - [BigQuery - Data Warehouse](#bigquery-data-warehouse)
+    - [BigQuery Features](#bigquery-features)
+    - [Data Warehouse Architecture](#data-warehouse-architecture)
+    - [Ingesting Data into BigQuery](#ingesting-data-into-bigquery)
+    - [Benefits for Use Cases](#benefits-for-use-cases)
+  - [Dataprep Lab 🚀](#dataprep-lab-🚀)
+    - [1. Create a Storage Bucket](#1-create-a-storage-bucket)
+    - [2. Initialize Cloud Dataprep](#2-initialize-cloud-dataprep)
+    - [3. Create a Flow](#3-create-a-flow)
+    - [4. Import Datasets](#4-import-datasets)
+    - [5. Prepare the Candidate File](#5-prepare-the-candidate-file)
+    - [6. Wrangle and Join Datasets](#6-wrangle-and-join-datasets)
+    - [7. Summarize Data](#7-summarize-data)
+    - [8. Rename and Format Columns](#8-rename-and-format-columns)
 <!--toc:end-->
 
 ## Managed Services Google offers
@@ -171,11 +183,13 @@ Dataproc simplifies big data processing, reduces costs, and integrates seamlessl
 ### 1. Create a Cluster
 
 1. **Set the Region**:
+
    ```bash
    gcloud config set dataproc/region REGION
    ```
 
 2. **Set up Project**:
+
    ```bash
    PROJECT_ID=$(gcloud config get-value project)
    gcloud config set project $PROJECT_ID
@@ -183,6 +197,7 @@ Dataproc simplifies big data processing, reduces costs, and integrates seamlessl
    ```
 
 3. **Assign Storage Permissions**:
+
    ```bash
    gcloud projects add-iam-policy-binding $PROJECT_ID \
      --member=serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com \
@@ -190,6 +205,7 @@ Dataproc simplifies big data processing, reduces costs, and integrates seamlessl
    ```
 
 4. **Enable Private Google Access**:
+
    ```bash
    gcloud compute networks subnets update default \
      --region=REGION --enable-private-ip-google-access
@@ -221,6 +237,7 @@ Dataproc simplifies big data processing, reduces costs, and integrates seamlessl
 ### 3. Update a Cluster
 
 1. **Scale Workers to 4 Nodes**:
+
    ```bash
    gcloud dataproc clusters update example-cluster --num-workers 4
    ```
@@ -248,6 +265,7 @@ Dataflow is a Google Cloud managed service designed for large-scale batch and st
 ### Integration
 
 Dataflow seamlessly integrates with:
+
 - **Cloud Storage**
 - **Pub/Sub**
 - **Datastore**
@@ -267,6 +285,7 @@ Dataflow simplifies these challenges by offering a fully managed, scalable, and 
 ## Templates Lab 🚀
 
 ### 1. Re-enable Dataflow API
+
 1. Open **Cloud Console** and search for **Dataflow API**.
 2. Click **Manage** > **Disable API** > Confirm **Disable** > **Enable API**.
 3. Verify the task via **Check my progress**.
@@ -276,12 +295,14 @@ Dataflow simplifies these challenges by offering a fully managed, scalable, and 
 ### 2. Create BigQuery Dataset, Table, and Cloud Storage Bucket (Cloud Shell)
 
 #### Create BigQuery Dataset
+
 1. Run:
    ```bash
    bq mk taxirides
    ```
 
 #### Create BigQuery Table
+
 1. Run:
    ```bash
    bq mk \
@@ -292,6 +313,7 @@ Dataflow simplifies these challenges by offering a fully managed, scalable, and 
    ```
 
 #### Create Cloud Storage Bucket
+
 1. Set bucket name:
    ```bash
    export BUCKET_NAME=<your_project_id>
@@ -307,11 +329,13 @@ Dataflow simplifies these challenges by offering a fully managed, scalable, and 
 ### 3. Create BigQuery Dataset, Table, and Cloud Storage Bucket (Console)
 
 #### Create BigQuery Dataset (Console)
+
 1. Go to **BigQuery** > **Create dataset**.
 2. Set **Dataset ID** to `taxirides` and **Location** to `us`.
 3. Click **Create Dataset**.
 
 #### Create BigQuery Table (Console)
+
 1. Open **taxirides dataset** > **Create Table**.
 2. Set **Table Name** to `realtime`.
 3. Add schema (Edit as text):
@@ -322,6 +346,7 @@ Dataflow simplifies these challenges by offering a fully managed, scalable, and 
 4. Click **Create Table**.
 
 #### Create Cloud Storage Bucket (Console)
+
 1. Navigate to **Cloud Storage** > **Buckets** > **Create Bucket**.
 2. Use your **Project ID** as the bucket name.
 3. Click **Create**.
@@ -330,6 +355,7 @@ Dataflow simplifies these challenges by offering a fully managed, scalable, and 
 ---
 
 ### 4. Run the Pipeline
+
 1. Deploy the Dataflow template:
    ```bash
    gcloud dataflow jobs run iotflow \
@@ -345,6 +371,7 @@ Dataflow simplifies these challenges by offering a fully managed, scalable, and 
 ---
 
 ### 5. Submit a Query
+
 1. Open **BigQuery Editor**.
 2. Run the query:
    ```sql
@@ -414,3 +441,138 @@ Dataflow simplifies these challenges by offering a fully managed, scalable, and 
    - Open your bucket and navigate to the `results` folder.
    - View the output files to see word counts.
 
+## BigQuery - Data Warehouse
+
+BigQuery is Google's fully managed, serverless, petabyte-scale data warehouse designed for analytics and machine learning.
+
+### BigQuery Features
+
+1. **Dual Services**: Offers storage and analytics in one platform, supporting petabyte-scale datasets.
+2. **Fully Managed**: SQL-based queries with no need to manage infrastructure.
+3. **Flexible Pricing**: Pay-as-you-go or flat-rate pricing models.
+4. **Data Encryption**: Encrypted at rest by default for security.
+5. **ML Integration**: Build ML models directly with SQL or integrate with tools like Vertex AI.
+
+---
+
+### Data Warehouse Architecture
+
+- **Input Data**: Managed by **Pub/Sub** for real-time data and **Cloud Storage** for batch data.
+- **Processing**: Handled by **Dataflow** for ETL operations.
+- **Storage and Analytics**: Managed by **BigQuery** for storing and analyzing processed data.
+- **Outputs**:
+  - BI tools like **Looker**, **Tableau**, and **Google Sheets** for visualization.
+  - AI/ML tools like **AutoML** and **Vertex AI** for machine learning.
+
+---
+
+### Ingesting Data into BigQuery
+
+1. **Batch Loading**: Load data in single/multiple operations (can be scheduled).
+2. **Streaming**: Real-time data ingestion for immediate querying.
+3. **Generated Data**: Use SQL to insert or query data directly.
+
+---
+
+### Benefits for Use Cases
+
+- **Fast Queries**: Analyze terabytes in seconds and petabytes in minutes.
+- **Visualization**: Create interactive dashboards with integrated tools.
+- **Machine Learning**: Build and evaluate ML models without coding expertise using BigQuery ML.
+
+BigQuery optimizes data storage, processing, and analytics, empowering users to derive insights and make informed decisions efficiently.
+
+## Dataprep Lab 🚀
+
+### 1. Create a Storage Bucket
+
+1. Go to **Cloud Storage > Buckets** in the Cloud Console.
+2. Click **Create bucket**.
+3. Name the bucket with a unique name. Leave other settings as default.
+4. Uncheck **Enforce public access prevention**.
+5. Click **Create**.
+6. Verify the task using **Check my progress**.
+
+---
+
+### 2. Initialize Cloud Dataprep
+
+1. Open Cloud Shell and run:
+
+    ```bash
+    gcloud beta services identity create --service=dataprep.googleapis.com
+    ```
+
+2. In the Cloud Console, go to **Navigation menu > View All Products > Alteryx Designer Cloud**.
+3. Accept the **Google Dataprep Terms of Service** and **Authorize sharing account information**.
+4. Log in using your student username and grant permissions.
+5. Click **Continue** to set up the default storage location.
+6. Verify the task using **Check my progress**.
+
+---
+
+### 3. Create a Flow
+
+1. Click the **Flows** icon, then **Create**, and select **Blank Flow**.
+2. Name the flow "FEC-2016" and describe it as "United States Federal Elections Commission 2016".
+3. Click **OK**.
+
+---
+
+### 4. Import Datasets
+
+1. Click **Add Datasets** and select **Import Datasets**.
+2. Choose **Cloud Storage** and edit the file path to `gs://spls/gsp105`, then click **Go**.
+3. Navigate to **us-fec/** and add:
+   - `cn-2016.txt` as "Candidate Master 2016".
+   - `itcont-2016-orig.txt` as "Campaign Contributions 2016".
+   4. Click **Import & Add to Flow**.
+
+---
+
+### 5. Prepare the Candidate File
+
+1. Select **Candidate Master 2016**, then click **Edit Recipe**.
+2. Perform the following steps:
+   - Widen **column5** and select the bin for 2016. Add the **Keep rows** step.
+   - In **column6 (State)**, change its type to **String** to resolve mismatches.
+   - Filter rows with "P" in **column7**. Add the **Keep rows** step.
+
+---
+
+### 6. Wrangle and Join Datasets
+
+1. Select **Campaign Contributions 2016**, click **Add > Recipe**, and then **Edit Recipe**.
+2. Add the following steps:
+   - Remove extra delimiters:
+     ```bash
+     replacepatterns col: * with: '' on: `{start}"|"{end}` global: true
+     ```
+   - Join with "Candidate Master 2016":
+     - In **Join Keys**, match `column2 = column11`.
+     - Add all columns to the joined dataset.
+
+---
+
+### 7. Summarize Data
+
+1. Create a summary table by entering the formula:
+   ```bash
+   pivot value:sum(column16),average(column16),countif(column16 > 0) group: column2,column24,column8
+   ```
+
+   2. Add the step to display aggregated results.
+
+---
+
+### 8. Rename and Format Columns
+
+1. Rename columns:
+   ```bash
+   rename type: manual mapping: [column24,'Candidate_Name'], [column2,'Candidate_ID'], [column8,'Party_Affiliation'], [sum_column16,'Total_Contribution_Sum'], [average_column16,'Average_Contribution_Sum'], [countif,'Number_of_Contributions']
+   ```
+
+2. Round the average contribution:
+    ```bash
+    set col: Average_Contribution_Sum value: round(Average_Contribution_Sum)
+    ```
