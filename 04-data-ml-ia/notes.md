@@ -10,33 +10,33 @@
     - [Dataproc Features](#dataproc-features)
     - [Use Cases](#use-cases)
   - [Dataproc Lab 🚀](#dataproc-lab-🚀)
-    - [Enable Cloud Dataproc API](#enable-cloud-dataproc-api)
-    - [Assign Storage Permission to Service Account](#assign-storage-permission-to-service-account)
-    - [Create a Dataproc Cluster](#create-a-dataproc-cluster)
-    - [Submit a Spark Job](#submit-a-spark-job)
-    - [View Job Output](#view-job-output)
-    - [Update Cluster Worker Nodes](#update-cluster-worker-nodes)
-    - [Rerun the Job](#rerun-the-job)
+    - [1. Enable Cloud Dataproc API](#1-enable-cloud-dataproc-api)
+    - [2. Assign Storage Permission to Service Account](#2-assign-storage-permission-to-service-account)
+    - [3. Create a Dataproc Cluster](#3-create-a-dataproc-cluster)
+    - [4. Submit a Spark Job](#4-submit-a-spark-job)
+    - [5. View Job Output](#5-view-job-output)
+    - [6. Update Cluster Worker Nodes](#6-update-cluster-worker-nodes)
+    - [7. Rerun the Job](#7-rerun-the-job)
   - [Dataproc Lab with Command Line 🚀](#dataproc-lab-with-command-line-🚀)
-    - [Create a Cluster](#create-a-cluster)
-    - [Submit a Job](#submit-a-job)
-    - [Update a Cluster](#update-a-cluster)
+    - [1. Create a Cluster](#1-create-a-cluster)
+    - [2. Submit a Job](#2-submit-a-job)
+    - [3. Update a Cluster](#3-update-a-cluster)
   - [Build extract, transform, and load (ETL) pipelines with Dataproc](#build-extract-transform-and-load-etl-pipelines-with-dataproc)
     - [ETL Features](#etl-features)
     - [Integration](#integration)
     - [Challenges in ETL Pipelines](#challenges-in-etl-pipelines)
   - [Templates Lab 🚀](#templates-lab-🚀)
-    - [Re-enable Dataflow API](#re-enable-dataflow-api)
-    - [Create BigQuery Dataset, Table, and Cloud Storage Bucket (Cloud Shell)](#create-bigquery-dataset-table-and-cloud-storage-bucket-cloud-shell)
+    - [1. Re-enable Dataflow API](#1-re-enable-dataflow-api)
+    - [2. Create BigQuery Dataset, Table, and Cloud Storage Bucket (Cloud Shell)](#2-create-bigquery-dataset-table-and-cloud-storage-bucket-cloud-shell)
       - [Create BigQuery Dataset](#create-bigquery-dataset)
       - [Create BigQuery Table](#create-bigquery-table)
       - [Create Cloud Storage Bucket](#create-cloud-storage-bucket)
-    - [Create BigQuery Dataset, Table, and Cloud Storage Bucket (Console)](#create-bigquery-dataset-table-and-cloud-storage-bucket-console)
+    - [3. Create BigQuery Dataset, Table, and Cloud Storage Bucket (Console)](#3-create-bigquery-dataset-table-and-cloud-storage-bucket-console)
       - [Create BigQuery Dataset (Console)](#create-bigquery-dataset-console)
-      - [Create BigQuery Table](#create-bigquery-table)
+      - [Create BigQuery Table (Console)](#create-bigquery-table-console)
       - [Create Cloud Storage Bucket (Console)](#create-cloud-storage-bucket-console)
-    - [Run the Pipeline](#run-the-pipeline)
-    - [Submit a Query](#submit-a-query)
+    - [4. Run the Pipeline](#4-run-the-pipeline)
+    - [5. Submit a Query](#5-submit-a-query)
 <!--toc:end-->
 
 ## Managed Services Google offers
@@ -87,7 +87,7 @@ Dataproc simplifies big data processing, reduces costs, and integrates seamlessl
 
 ## Dataproc Lab 🚀
 
-### Enable Cloud Dataproc API
+### 1. Enable Cloud Dataproc API
 
 1. Go to **Navigation menu > APIs & Services > Library**.
 2. Search for **Cloud Dataproc API**.
@@ -95,7 +95,7 @@ Dataproc simplifies big data processing, reduces costs, and integrates seamlessl
 
 ---
 
-### Assign Storage Permission to Service Account
+### 2. Assign Storage Permission to Service Account
 
 1. Navigate to **IAM & Admin > IAM**.
 2. Locate `compute@developer.gserviceaccount.com`.
@@ -104,7 +104,7 @@ Dataproc simplifies big data processing, reduces costs, and integrates seamlessl
 
 ---
 
-### Create a Dataproc Cluster
+### 3. Create a Dataproc Cluster
 
 1. Go to **Navigation menu > View all products > Dataproc > Clusters**, then click **Create cluster**.
 2. Set the following values:
@@ -125,7 +125,7 @@ Dataproc simplifies big data processing, reduces costs, and integrates seamlessl
 
 ---
 
-### Submit a Spark Job
+### 4. Submit a Spark Job
 
 1. Navigate to **Jobs**, then click **Submit job**.
 2. Set the following values:
@@ -139,14 +139,14 @@ Dataproc simplifies big data processing, reduces costs, and integrates seamlessl
 
 ---
 
-### View Job Output
+### 5. View Job Output
 
 1. Click on the **Job ID** in the Jobs list.
 2. Enable **LINE WRAP** or scroll to see the calculated value of Pi.
 
 ---
 
-### Update Cluster Worker Nodes
+### 6. Update Cluster Worker Nodes
 
 1. Go to **Clusters**, and click on `example-cluster`.
 2. Click **Configuration**, then **Edit**.
@@ -155,13 +155,13 @@ Dataproc simplifies big data processing, reduces costs, and integrates seamlessl
 
 ---
 
-### Rerun the Job
+### 7. Rerun the Job
 
 1. Repeat the steps in **Submit a Spark Job** using the updated cluster.
 
 ## Dataproc Lab with Command Line 🚀
 
-### Create a Cluster
+### 1. Create a Cluster
 
 1. **Set the Region**:
    ```bash
@@ -198,7 +198,7 @@ Dataproc simplifies big data processing, reduces costs, and integrates seamlessl
 
 ---
 
-### Submit a Job
+### 2. Submit a Job
 
 1. **Run Spark Job**:
    ```bash
@@ -211,7 +211,7 @@ Dataproc simplifies big data processing, reduces costs, and integrates seamlessl
 
 ---
 
-### Update a Cluster
+### 3. Update a Cluster
 
 1. **Scale Workers to 4 Nodes**:
    ```bash
@@ -259,14 +259,14 @@ Dataflow simplifies these challenges by offering a fully managed, scalable, and 
 
 ## Templates Lab 🚀
 
-### Re-enable Dataflow API
+### 1. Re-enable Dataflow API
 1. Open **Cloud Console** and search for **Dataflow API**.
 2. Click **Manage** > **Disable API** > Confirm **Disable** > **Enable API**.
 3. Verify the task via **Check my progress**.
 
 ---
 
-### Create BigQuery Dataset, Table, and Cloud Storage Bucket (Cloud Shell)
+### 2. Create BigQuery Dataset, Table, and Cloud Storage Bucket (Cloud Shell)
 
 #### Create BigQuery Dataset
 1. Run:
@@ -297,7 +297,7 @@ Dataflow simplifies these challenges by offering a fully managed, scalable, and 
 
 ---
 
-### Create BigQuery Dataset, Table, and Cloud Storage Bucket (Console)
+### 3. Create BigQuery Dataset, Table, and Cloud Storage Bucket (Console)
 
 #### Create BigQuery Dataset (Console)
 1. Go to **BigQuery** > **Create dataset**.
@@ -322,7 +322,7 @@ Dataflow simplifies these challenges by offering a fully managed, scalable, and 
 
 ---
 
-### Run the Pipeline
+### 4. Run the Pipeline
 1. Deploy the Dataflow template:
    ```bash
    gcloud dataflow jobs run iotflow \
@@ -337,7 +337,7 @@ Dataflow simplifies these challenges by offering a fully managed, scalable, and 
 
 ---
 
-### Submit a Query
+### 5. Submit a Query
 1. Open **BigQuery Editor**.
 2. Run the query:
    ```sql
