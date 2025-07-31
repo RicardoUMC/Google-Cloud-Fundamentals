@@ -1,7 +1,8 @@
-# Google Cloud Data, ML and AI Services
+# Google Cloud Data and Machine Learning Services
 
 <!--toc:start-->
-- [Google Cloud Data, ML and AI Services](#google-cloud-data-ml-and-ai-services)
+- [Google Cloud Data and Machine Learning Services](#google-cloud-data-and-machine-learning-services)
+- [Google Cloud Data](#google-cloud-data)
   - [Managed Services Google offers](#managed-services-google-offers)
     - [1. Dataproc](#1-dataproc)
     - [2. Dataflow](#2-dataflow)
@@ -56,7 +57,38 @@
     - [6. Wrangle and Join Datasets](#6-wrangle-and-join-datasets)
     - [7. Summarize Data](#7-summarize-data)
     - [8. Rename and Format Columns](#8-rename-and-format-columns)
+- [Machine Learning and AI Services](#machine-learning-and-ai-services)
+  - [Machine Learning](#machine-learning)
+    - [Introduction to AI and ML](#introduction-to-ai-and-ml)
+      - [Key Concepts:](#key-concepts)
+    - [Training Machine Learning Models](#training-machine-learning-models)
+      - [Example Use Case:](#example-use-case)
+    - [Algorithms and Reusability](#algorithms-and-reusability)
+    - [Google Cloud ML Options](#google-cloud-ml-options)
+    - [Learning Tools](#learning-tools)
+  - [Building Models with Vertex AI](#building-models-with-vertex-ai)
+    - [Key Challenges in Machine Learning](#key-challenges-in-machine-learning)
+    - [Vertex AI: A Unified Platform](#vertex-ai-a-unified-platform)
+      - [Features of Vertex AI:](#features-of-vertex-ai)
+      - [Building Models with Vertex AI](#building-models-with-vertex-ai)
+    - [Benefits of Vertex AI](#benefits-of-vertex-ai)
+  - [AutoML](#automl)
+    - [Key Technologies Behind AutoML](#key-technologies-behind-automl)
+    - [Benefits of AutoML](#benefits-of-automl)
+    - [Supported Data Types and Objectives](#supported-data-types-and-objectives)
+    - [Workflow Overview](#workflow-overview)
+  - [Custom Training](#custom-training)
+    - [Using Vertex AI Workbench](#using-vertex-ai-workbench)
+    - [Choosing the Training Environment](#choosing-the-training-environment)
+      - [1. Pre-built Containers](#1-pre-built-containers)
+      - [2. Custom Containers](#2-custom-containers)
+  - [Pre-built API](#pre-built-api)
+    - [List of Pre-built APIs](#list-of-pre-built-apis)
+    - [Exploring APIs](#exploring-apis)
+    - [Real-World Example: Bloomberg and Cloud Translation API](#real-world-example-bloomberg-and-cloud-translation-api)
 <!--toc:end-->
+
+# Google Cloud Data
 
 ## Managed Services Google offers
 
@@ -499,9 +531,9 @@ BigQuery optimizes data storage, processing, and analytics, empowering users to 
 
 1. Open Cloud Shell and run:
 
-    ```bash
-    gcloud beta services identity create --service=dataprep.googleapis.com
-    ```
+   ```bash
+   gcloud beta services identity create --service=dataprep.googleapis.com
+   ```
 
 2. In the Cloud Console, go to **Navigation menu > View All Products > Alteryx Designer Cloud**.
 3. Accept the **Google Dataprep Terms of Service** and **Authorize sharing account information**.
@@ -557,6 +589,7 @@ BigQuery optimizes data storage, processing, and analytics, empowering users to 
 ### 7. Summarize Data
 
 1. Create a summary table by entering the formula:
+
    ```bash
    pivot value:sum(column16),average(column16),countif(column16 > 0) group: column2,column24,column8
    ```
@@ -568,11 +601,247 @@ BigQuery optimizes data storage, processing, and analytics, empowering users to 
 ### 8. Rename and Format Columns
 
 1. Rename columns:
+
    ```bash
    rename type: manual mapping: [column24,'Candidate_Name'], [column2,'Candidate_ID'], [column8,'Party_Affiliation'], [sum_column16,'Total_Contribution_Sum'], [average_column16,'Average_Contribution_Sum'], [countif,'Number_of_Contributions']
    ```
 
 2. Round the average contribution:
-    ```bash
-    set col: Average_Contribution_Sum value: round(Average_Contribution_Sum)
-    ```
+   ```bash
+   set col: Average_Contribution_Sum value: round(Average_Contribution_Sum)
+   ```
+
+# Machine Learning and AI Services
+
+## Machine Learning
+
+The world is filled with things that most of us can understand and react to without much thought. For example, a stop sign partially covered by snow is still a stop sign, and a chair that's five times bigger than usual is still a place to sit. But for computers, which don't have the benefits of growing up and learning the nuances of these objects, the world is often messy and complicated.
+
+---
+
+### Introduction to AI and ML
+
+Artificial Intelligence (AI) is an umbrella term that includes anything related to computers mimicking human intelligence. Machine Learning (ML), a subset of AI, enables machines to learn from data without being explicitly programmed. Deep Learning (DL), a further subset, uses neural networks to analyze unstructured data like images, speech, and text.
+
+#### Key Concepts:
+
+- **AI**: Mimics human intelligence. Example: Grammar checks in word processors.
+- **ML**: Solves problems using data examples. Example: Predicting trip durations.
+- **DL**: Adds depth to learning using neural networks. Example: Image classification.
+
+---
+
+### Training Machine Learning Models
+
+ML models require training with high-quality data. The training involves:
+
+1. **Inputs and Labels**: Examples consist of inputs (e.g., images) and their correct answers (labels).
+2. **Data Quality**: High-quality data is crucial as models lack human general knowledge.
+3. **Generalization**: Once trained, models can make predictions on unseen data.
+
+#### Example Use Case:
+
+- **Defect Detection**: Train an ML model with labeled images of defective and good parts. Use the model to classify new parts.
+
+---
+
+### Algorithms and Reusability
+
+ML algorithms are standardized and reusable across use cases. For example:
+
+- **Image Classification**: The same algorithm can classify manufacturing defects or categorize leaves in images after training on respective datasets.
+- **Reusability**: While the code remains the same, the model must be retrained for each task.
+
+---
+
+### Google Cloud ML Options
+
+Google Cloud offers multiple ways to build ML models:
+
+1. **BigQuery ML**: Use SQL queries to create and run models directly in BigQuery.
+2. **AutoML**: Build custom models with a no-code, point-and-click interface.
+3. **Custom Training**: Create and deploy models with full flexibility over the ML pipeline.
+4. **Pre-built APIs**: Use ready-made models trained by Google for tasks like translation or image recognition.
+
+---
+
+### Learning Tools
+
+Explore interactive tools like the TensorFlow Neural Network Playground to understand how ML models work. This helps demystify concepts like neural networks and demonstrates their applications at scale, such as in Google Photos.
+
+## Building Models with Vertex AI
+
+Vertex AI simplifies the process of building machine learning models for ML developers, data scientists, and data engineers by addressing challenges in data handling, model training, and deployment.
+
+---
+
+### Key Challenges in Machine Learning
+
+1. **Data Challenges**:
+   - Handling large quantities of data.
+   - Choosing the right machine learning model.
+   - Utilizing sufficient computing power.
+
+2. **Production Challenges**:
+   - Ensuring scalability.
+   - Continuous integration and delivery (CI/CD).
+   - Monitoring deployed models.
+
+3. **Ease-of-Use Challenges**:
+   - Many tools require advanced coding skills.
+   - Lack of unified workflows for accessing tools.
+
+---
+
+### Vertex AI: A Unified Platform
+
+Vertex AI unifies the machine learning ecosystem, enabling users to create, manage, and deploy models efficiently.
+
+#### Features of Vertex AI:
+
+1. **Data Readiness**:
+   - Upload data from **Cloud Storage**, **BigQuery**, or local machines.
+2. **Feature Readiness**:
+   - Create and share processed data (features) using the **Feature Store**.
+3. **Model Training and Tuning**:
+   - Experiment with different models and adjust hyperparameters.
+4. **Deployment and Monitoring**:
+   - Automate pipelines for production.
+   - Monitor models for continuous improvement.
+
+#### Building Models with Vertex AI
+
+- **AutoML**: A no-code solution for quick and easy model building.
+- **Custom Training**: Offers full control over development and processes.
+
+---
+
+### Benefits of Vertex AI
+
+Vertex AI provides the following advantages, summarized as the **Four S's**:
+
+1. **Seamless**:
+   - Smooth experience from data preparation to production.
+2. **Scalable**:
+   - Machine learning operations (MLOps) ensure automatic scaling of resources.
+3. **Sustainable**:
+   - Reuse and share artifacts and features across projects.
+4. **Speedy**:
+   - Reduces code requirements by 80% compared to competitors.
+
+## AutoML
+
+AutoML is a no-code solution provided through Vertex AI, enabling users to train high-quality custom machine learning models with minimal effort or machine learning expertise. It automates machine learning pipelines and significantly reduces the manual work required for tasks like hyperparameter tuning and model comparison.
+
+---
+
+### Key Technologies Behind AutoML
+
+1. **Transfer Learning**:
+   - Builds a knowledge base using pre-trained models trained on similar, larger datasets.
+   - Enables smaller datasets or less computational power to achieve state-of-the-art results.
+   - Reduces data and computation requirements while enhancing model accuracy.
+
+2. **Neural Architecture Search**:
+   - Finds the optimal model for a given project by evaluating multiple models.
+   - Produces an ensemble of machine learning models and selects the best one.
+
+---
+
+### Benefits of AutoML
+
+- **No-Code Solution**: Allows training of high-quality models without requiring advanced machine learning expertise.
+- **Prototyping and Exploration**: Enables rapid prototyping of models and dataset exploration before full-scale development.
+- **Focus on Business Problems**: Data scientists can prioritize defining business problems and refining model results.
+
+---
+
+### Supported Data Types and Objectives
+
+- AutoML supports four data types:
+  1. **Image**
+  2. **Tabular**
+  3. **Text**
+  4. **Video**
+
+- For each data type, AutoML addresses specific objectives, providing flexibility to solve a variety of business problems.
+
+---
+
+### Workflow Overview
+
+1. **Upload Data**:
+   - AutoML accepts data from sources like Cloud Storage, BigQuery, or local machines.
+2. **Define Objectives**:
+   - Specify the problem to solve based on the uploaded data.
+   - Unlike pre-built APIs that utilize Google’s datasets, AutoML builds custom models using user-provided data.
+3. **Training and Prediction**:
+   - Train the model using the provided data.
+   - Apply the trained model to predict outcomes based on the defined objectives.
+
+AutoML is a powerful tool for solving complex problems across multiple data types and objectives, combining ease of use with advanced machine learning capabilities.
+
+## Custom Training
+
+Custom training allows you to create and control your own machine learning environment throughout the entire development process, starting from data preparation to model deployment. This approach gives you full flexibility over the ML workflow, enabling you to customize every step of the process.
+
+---
+
+### Using Vertex AI Workbench
+
+To code your machine learning model, you can leverage **Vertex AI Workbench**, a unified development environment designed for the entire data science workflow. It supports tasks like:
+
+- **Exploration**: Analyzing and preparing data before training.
+- **Training**: Building and fine-tuning machine learning models.
+- **Deployment**: Deploying models to production environments.
+
+---
+
+### Choosing the Training Environment
+
+Before you start coding, you need to decide on the environment for your ML training code. There are two primary options:
+
+#### 1. Pre-built Containers
+
+A pre-built container is like a **fully-furnished kitchen**, complete with cabinets, appliances, and cookware. It comes with all the necessary dependencies and libraries pre-installed, making it ideal for common ML frameworks. Pre-built containers support platforms like:
+
+- **TensorFlow**
+- **PyTorch**
+- **Scikit Learn**
+- **XGBoost**
+
+If your ML training requires these platforms and Python code, a pre-built container is likely the best solution.
+
+#### 2. Custom Containers
+
+A custom container is like an **empty kitchen**, where you choose and install everything yourself. This option provides complete control over the tools, dependencies, and environment configuration, making it suitable for highly customized machine learning tasks.
+
+## Pre-built API
+
+When using AutoML, you create a domain-specific labeled dataset to train a custom ML model. However, if you lack such data, Google's pre-built ML APIs offer an excellent alternative. These ready-to-use APIs eliminate the need to build, curate, and train models, enabling you to integrate predictions directly into your applications with minimal effort.
+
+---
+
+### List of Pre-built APIs
+
+1. **Speech-to-Text API**: Converts audio to text for data processing.
+2. **Cloud Natural Language API**: Recognizes parts of speech, entities, and sentiment.
+3. **Cloud Translation API**: Converts text from one language to another.
+4. **Text-to-Speech API**: Converts text into high-quality voice audio.
+5. **Vision API**: Recognizes and processes content in static images.
+6. **Video Intelligence API**: Recognizes motion and action in video.
+
+Google has already done significant work to train these models using extensive datasets, ensuring high-quality performance:
+
+- **Vision API**: Based on Google's image datasets.
+- **Speech-to-Text API**: Trained on YouTube captions.
+- **Translation API**: Built on Google Translate.
+
+---
+
+### Exploring APIs
+
+You can experiment with these APIs directly in a browser. For example, try the Vision API by navigating to [cloud.google.com/vision](https://cloud.google.com/vision), where you can upload an image and see the API in action.
+
+When building a production model, you’ll need to pass a JSON object request to the API and parse the returned results.
+
