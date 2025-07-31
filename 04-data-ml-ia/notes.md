@@ -37,6 +37,13 @@
       - [Create Cloud Storage Bucket (Console)](#create-cloud-storage-bucket-console)
     - [4. Run the Pipeline](#4-run-the-pipeline)
     - [5. Submit a Query](#5-submit-a-query)
+  - [Dataflow Python Lab 🚀](#dataflow-python-lab-🚀)
+    - [1. Create a Cloud Storage Bucket](#1-create-a-cloud-storage-bucket)
+      - [Verify:](#verify)
+    - [2. Install Apache Beam SDK for Python](#2-install-apache-beam-sdk-for-python)
+    - [3. Run a Dataflow Pipeline Remotely](#3-run-a-dataflow-pipeline-remotely)
+    - [4. Verify Dataflow Job Success](#4-verify-dataflow-job-success)
+      - [Verify:](#verify)
 <!--toc:end-->
 
 ## Managed Services Google offers
@@ -344,3 +351,66 @@ Dataflow simplifies these challenges by offering a fully managed, scalable, and 
    SELECT * FROM `<your_project_id>.taxirides.realtime` LIMIT 1000;
    ```
 3. Wait for results in the **Query Results** panel.
+
+## Dataflow Python Lab 🚀
+
+### 1. Create a Cloud Storage Bucket
+
+1. Navigate to **Cloud Storage > Buckets** in the Google Cloud Console.
+2. Click **Create bucket** and specify the following:
+   - **Name**: Use a unique name like `qwiklabs-gcp-04-241a6f9e39c9-bucket`.
+   - **Location type**: Multi-region.
+   - **Location**: `us`.
+3. Click **Create**.
+4. Confirm if prompted to prevent public access.
+
+---
+
+### 2. Install Apache Beam SDK for Python
+
+1. Run a Python 3.9 Docker container:
+   ```bash
+   docker run -it -e DEVSHELL_PROJECT_ID=$DEVSHELL_PROJECT_ID python:3.9 /bin/bash
+   ```
+2. Install Apache Beam SDK:
+   ```bash
+   pip install 'apache-beam[gcp]'==2.42.0
+   ```
+3. Run the `wordcount.py` example locally:
+   ```bash
+   python -m apache_beam.examples.wordcount --output OUTPUT_FILE
+   ```
+4. View the output:
+   ```bash
+   ls
+   cat <OUTPUT_FILE>
+   ```
+
+---
+
+### 3. Run a Dataflow Pipeline Remotely
+
+1. Set the bucket environment variable:
+   ```bash
+   BUCKET=gs://<your_bucket_name>
+   ```
+2. Run the `wordcount.py` example:
+   ```bash
+   python -m apache_beam.examples.wordcount --project $DEVSHELL_PROJECT_ID \
+     --runner DataflowRunner \
+     --staging_location $BUCKET/staging \
+     --temp_location $BUCKET/temp \
+     --output $BUCKET/results/output \
+     --region us-central1
+   ```
+
+---
+
+### 4. Verify Dataflow Job Success
+
+1. Go to **Navigation menu > Dataflow**.
+2. Ensure the job status is **Running**, then wait until it changes to **Succeeded**.
+3. Explore the output in **Cloud Storage > Buckets**:
+   - Open your bucket and navigate to the `results` folder.
+   - View the output files to see word counts.
+
