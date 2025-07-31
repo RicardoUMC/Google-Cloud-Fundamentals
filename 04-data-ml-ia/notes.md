@@ -66,7 +66,7 @@
     - [Algorithms and Reusability](#algorithms-and-reusability)
     - [Google Cloud ML Options](#google-cloud-ml-options)
     - [Learning Tools](#learning-tools)
-  - [Building Models with Vertex AI](#building-models-with-vertex-ai)
+  - [Vertex AI](#vertex-ai)
     - [Key Challenges in Machine Learning](#key-challenges-in-machine-learning)
     - [Vertex AI: A Unified Platform](#vertex-ai-a-unified-platform)
       - [Features of Vertex AI:](#features-of-vertex-ai)
@@ -85,7 +85,6 @@
   - [Pre-built API](#pre-built-api)
     - [List of Pre-built APIs](#list-of-pre-built-apis)
     - [Exploring APIs](#exploring-apis)
-    - [Real-World Example: Bloomberg and Cloud Translation API](#real-world-example-bloomberg-and-cloud-translation-api)
 <!--toc:end-->
 
 # Google Cloud Data
@@ -669,7 +668,7 @@ Google Cloud offers multiple ways to build ML models:
 
 Explore interactive tools like the TensorFlow Neural Network Playground to understand how ML models work. This helps demystify concepts like neural networks and demonstrates their applications at scale, such as in Google Photos.
 
-## Building Models with Vertex AI
+## Vertex AI
 
 Vertex AI simplifies the process of building machine learning models for ML developers, data scientists, and data engineers by addressing challenges in data handling, model training, and deployment.
 
