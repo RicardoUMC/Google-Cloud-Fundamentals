@@ -85,11 +85,11 @@
     - [List of Pre-built APIs](#list-of-pre-built-apis)
     - [Exploring APIs](#exploring-apis)
   - [Cloud Neural Language API Lab 🚀](#cloud-neural-language-api-lab-🚀)
-    - [1. Create an API Key](#1-create-an-api-key)
+    - [1. Create an API Key for Cloud Natural Language API](#1-create-an-api-key-for-cloud-natural-language-api)
     - [2. Make an Entity Analysis Request](#2-make-an-entity-analysis-request)
     - [Output Example](#output-example)
   - [Speech-to-Text API Lab 🚀](#speech-to-text-api-lab-🚀)
-    - [1. Create an API Key](#1-create-an-api-key)
+    - [1. Create an API Key for Speech-to-Text API](#1-create-an-api-key-for-speech-to-text-api)
     - [2. Create Your Speech-to-Text API Request](#2-create-your-speech-to-text-api-request)
     - [3. Call the Speech-to-Text API](#3-call-the-speech-to-text-api)
   - [Video Intelligence Lab 🚀](#video-intelligence-lab-🚀)
@@ -857,14 +857,16 @@ When building a production model, you’ll need to pass a JSON object request to
 
 ## Cloud Neural Language API Lab 🚀
 
-### 1. Create an API Key
+### 1. Create an API Key for Cloud Natural Language API
 
 1. **Set the PROJECT_ID Environment Variable**:
+
    ```bash
    export GOOGLE_CLOUD_PROJECT=$(gcloud config get-value core/project)
    ```
 
 2. **Create a New Service Account**:
+
    ```bash
    gcloud iam service-accounts create my-natlang-sa \
      --display-name "my natural language service account"
@@ -894,7 +896,7 @@ When building a production model, you’ll need to pass a JSON object request to
 
 2. **Run Entity Analysis Using the Natural Language API**:
    - Analyze the following text:  
-     *"Michelangelo Caravaggio, Italian painter, is known for 'The Calling of Saint Matthew'"*  
+     _"Michelangelo Caravaggio, Italian painter, is known for 'The Calling of Saint Matthew'"_  
      Execute the command:
      ```bash
      gcloud ml language analyze-entities \
@@ -984,7 +986,7 @@ The `result.json` file will display results similar to the following:
 
 ## Speech-to-Text API Lab 🚀
 
-### 1. Create an API Key
+### 1. Create an API Key for Speech-to-Text API
 
 1. Navigate to **Navigation menu > APIs & Services > Credentials** in the Google Cloud Console.
 2. Click **Create credentials**, then select **API key** from the dropdown menu.
@@ -1008,24 +1010,27 @@ The `result.json` file will display results similar to the following:
    - Click **SSH** to open an interactive shell.
 
 2. Create a file named `request.json`:
+
    ```bash
    touch request.json
    ```
 
 3. Open the `request.json` file for editing:
+
    ```bash
    nano request.json
    ```
 
 4. Add the following content to the file:
+
    ```json
    {
      "config": {
-         "encoding": "FLAC",
-         "languageCode": "en-US"
+       "encoding": "FLAC",
+       "languageCode": "en-US"
      },
      "audio": {
-         "uri": "gs://cloud-samples-tests/speech/brooklyn.flac"
+       "uri": "gs://cloud-samples-tests/speech/brooklyn.flac"
      }
    }
    ```
@@ -1038,12 +1043,14 @@ The `result.json` file will display results similar to the following:
 ### 3. Call the Speech-to-Text API
 
 1. Use the following `curl` command to send your request to the Speech-to-Text API:
+
    ```bash
    curl -s -X POST -H "Content-Type: application/json" --data-binary @request.json \
    "https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}"
    ```
 
 2. The API response will look something like this:
+
    ```json
    {
      "results": [
@@ -1062,6 +1069,7 @@ The `result.json` file will display results similar to the following:
 3. You created a Speech-to-Text API request, then called the Speech-to-Text API.
 
    Run the following command to save the response in a `result.json` file:
+
    ```bash
    curl -s -X POST -H "Content-Type: application/json" --data-binary @request.json \
    "https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}" > result.json
@@ -1072,18 +1080,21 @@ The `result.json` file will display results similar to the following:
 ### 1. Set up Authorization
 
 1. **Create a Service Account**:
+
    ```bash
    gcloud iam service-accounts create quickstart
    ```
 
 2. **Create a Service Account Key File**:
    Replace `<your-project-123>` with your Project ID:
+
    ```bash
    gcloud iam service-accounts keys create key.json --iam-account quickstart@<your-project-123>.iam.gserviceaccount.com
    ```
 
 3. **Authenticate the Service Account**:
    Pass the location of the service account key file:
+
    ```bash
    gcloud auth activate-service-account --key-file key.json
    ```
@@ -1100,6 +1111,7 @@ The `result.json` file will display results similar to the following:
 
 1. **Create a JSON Request File**:
    Save the following text as `request.json`:
+
    ```bash
    cat > request.json <<EOF
    {
@@ -1116,6 +1128,7 @@ The `result.json` file will display results similar to the following:
 
 2. **Submit the Video Annotation Request**:
    Use the `curl` command to make the request:
+
    ```bash
    curl -s -H 'Content-Type: application/json' \
        -H 'Authorization: Bearer '$(gcloud auth print-access-token)'' \
@@ -1125,6 +1138,7 @@ The `result.json` file will display results similar to the following:
 
 3. **Response**:
    The API will process your request and return an operation name similar to the example below:
+
    ```json
    {
      "name": "projects/474887704060/locations/asia-east1/operations/16366331060670521152"
@@ -1139,6 +1153,7 @@ The `result.json` file will display results similar to the following:
 
 1. **Request Operation Information**:
    Replace `PROJECTS`, `LOCATIONS`, and `OPERATION_NAME` with the respective values from the previous step:
+
    ```bash
    curl -s -H 'Content-Type: application/json' \
        -H 'Authorization: Bearer '$(gcloud auth print-access-token)'' \
@@ -1174,4 +1189,4 @@ The `result.json` file will display results similar to the following:
                ]
              },
             ...
-
+   ```
