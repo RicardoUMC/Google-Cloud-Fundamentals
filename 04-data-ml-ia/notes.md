@@ -85,6 +85,15 @@
   - [Pre-built API](#pre-built-api)
     - [List of Pre-built APIs](#list-of-pre-built-apis)
     - [Exploring APIs](#exploring-apis)
+  - [Cloud Neural Language API Lab 🚀](#cloud-neural-language-api-lab-🚀)
+    - [1. Create an API Key](#1-create-an-api-key)
+    - [2. Make an Entity Analysis Request](#2-make-an-entity-analysis-request)
+    - [Output Example](#output-example)
+  - [Speech-to-Text API Lab 🚀](#speech-to-text-api-lab-🚀)
+    - [1. Create an API Key](#1-create-an-api-key)
+    - [2. Create Your Speech-to-Text API Request](#2-create-your-speech-to-text-api-request)
+    - [3. Call the Speech-to-Text API](#3-call-the-speech-to-text-api)
+  - [Video Intelligence Lab 🚀](#video-intelligence-lab-🚀)
 <!--toc:end-->
 
 # Google Cloud Data
@@ -843,4 +852,324 @@ Google has already done significant work to train these models using extensive d
 You can experiment with these APIs directly in a browser. For example, try the Vision API by navigating to [cloud.google.com/vision](https://cloud.google.com/vision), where you can upload an image and see the API in action.
 
 When building a production model, you’ll need to pass a JSON object request to the API and parse the returned results.
+
+## Cloud Neural Language API Lab 🚀
+
+### 1. Create an API Key
+
+1. **Set the PROJECT_ID Environment Variable**:
+   ```bash
+   export GOOGLE_CLOUD_PROJECT=$(gcloud config get-value core/project)
+   ```
+
+2. **Create a New Service Account**:
+   ```bash
+   gcloud iam service-accounts create my-natlang-sa \
+     --display-name "my natural language service account"
+   ```
+
+3. **Generate Credentials for the Service Account**:
+   - Save the credentials as a JSON file named `key.json` in your home directory:
+     ```bash
+     gcloud iam service-accounts keys create ~/key.json \
+       --iam-account my-natlang-sa@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com
+     ```
+
+4. **Set the GOOGLE_APPLICATION_CREDENTIALS Environment Variable**:
+   - Replace `USER` with your username:
+     ```bash
+     export GOOGLE_APPLICATION_CREDENTIALS="/home/USER/key.json"
+     ```
+
+---
+
+### 2. Make an Entity Analysis Request
+
+1. **Connect to the Provisioned Instance**:
+   - Open the **Navigation menu** in the Google Cloud Console.
+   - Select **Compute Engine** and locate the provisioned Linux instance.
+   - Click **SSH** to open an interactive shell.
+
+2. **Run Entity Analysis Using the Natural Language API**:
+   - Analyze the following text:  
+     *"Michelangelo Caravaggio, Italian painter, is known for 'The Calling of Saint Matthew'"*  
+     Execute the command:
+     ```bash
+     gcloud ml language analyze-entities \
+       --content="Michelangelo Caravaggio, Italian painter, is known for 'The Calling of Saint Matthew'." > result.json
+     ```
+
+3. **Preview the Output**:
+   - Use the `cat` command to view the contents of the `result.json` file:
+     ```bash
+     cat result.json
+     ```
+
+---
+
+### Output Example
+
+The `result.json` file will display results similar to the following:
+
+```json
+{
+  "entities": [
+    {
+      "name": "Michelangelo Caravaggio",
+      "type": "PERSON",
+      "metadata": {
+        "wikipedia_url": "http://en.wikipedia.org/wiki/Caravaggio",
+        "mid": "/m/020bg"
+      },
+      "salience": 0.83047235,
+      "mentions": [
+        {
+          "text": {
+            "content": "Michelangelo Caravaggio",
+            "beginOffset": 0
+          },
+          "type": "PROPER"
+        },
+        {
+          "text": {
+            "content": "painter",
+            "beginOffset": 33
+          },
+          "type": "COMMON"
+        }
+      ]
+    },
+    {
+      "name": "Italian",
+      "type": "LOCATION",
+      "metadata": {
+        "mid": "/m/03rjj",
+        "wikipedia_url": "http://en.wikipedia.org/wiki/Italy"
+      },
+      "salience": 0.13870546,
+      "mentions": [
+        {
+          "text": {
+            "content": "Italian",
+            "beginOffset": 25
+          },
+          "type": "PROPER"
+        }
+      ]
+    },
+    {
+      "name": "The Calling of Saint Matthew",
+      "type": "EVENT",
+      "metadata": {
+        "mid": "/m/085_p7",
+        "wikipedia_url": "http://en.wikipedia.org/wiki/The_Calling_of_St_Matthew_(Caravaggio)"
+      },
+      "salience": 0.030822212,
+      "mentions": [
+        {
+          "text": {
+            "content": "The Calling of Saint Matthew",
+            "beginOffset": 69
+          },
+          "type": "PROPER"
+        }
+      ]
+    }
+  ],
+  "language": "en"
+}
+```
+
+## Speech-to-Text API Lab 🚀
+
+### 1. Create an API Key
+
+1. Navigate to **Navigation menu > APIs & Services > Credentials** in the Google Cloud Console.
+2. Click **Create credentials**, then select **API key** from the dropdown menu.
+3. Copy the generated API key and click **Close**.
+4. Save the API key as an environment variable:
+   ```bash
+   export API_KEY=<YOUR_API_KEY>
+   ```
+   Replace `<YOUR_API_KEY>` with the copied API key.
+
+---
+
+### 2. Create Your Speech-to-Text API Request
+
+> [!NOTE]
+> You will use a pre-recorded file available in Cloud Storage: `gs://cloud-samples-tests/speech/brooklyn.flac`. Listen to the audio file before proceeding.
+
+1. Connect via SSH to the provisioned instance:
+   - Go to **Navigation menu > Compute Engine**.
+   - Locate the `linux-instance` in the **VM instances** window.
+   - Click **SSH** to open an interactive shell.
+
+2. Create a file named `request.json`:
+   ```bash
+   touch request.json
+   ```
+
+3. Open the `request.json` file for editing:
+   ```bash
+   nano request.json
+   ```
+
+4. Add the following content to the file:
+   ```json
+   {
+     "config": {
+         "encoding": "FLAC",
+         "languageCode": "en-US"
+     },
+     "audio": {
+         "uri": "gs://cloud-samples-tests/speech/brooklyn.flac"
+     }
+   }
+   ```
+
+5. Save and close the file:
+   - Press `CTRL + X`, then `Y`, and hit `Enter`.
+
+---
+
+### 3. Call the Speech-to-Text API
+
+1. Use the following `curl` command to send your request to the Speech-to-Text API:
+   ```bash
+   curl -s -X POST -H "Content-Type: application/json" --data-binary @request.json \
+   "https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}"
+   ```
+
+2. The API response will look something like this:
+   ```json
+   {
+     "results": [
+       {
+         "alternatives": [
+           {
+             "transcript": "how old is the Brooklyn Bridge",
+             "confidence": 0.98267895
+           }
+         ]
+       }
+     ]
+   }
+   ```
+
+3. You created a Speech-to-Text API request, then called the Speech-to-Text API.
+
+   Run the following command to save the response in a `result.json` file:
+   ```bash
+   curl -s -X POST -H "Content-Type: application/json" --data-binary @request.json \
+   "https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}" > result.json
+   ```
+
+## Video Intelligence Lab 🚀
+
+### 1. Set up Authorization
+
+1. **Create a Service Account**:
+   ```bash
+   gcloud iam service-accounts create quickstart
+   ```
+
+2. **Create a Service Account Key File**:
+   Replace `<your-project-123>` with your Project ID:
+   ```bash
+   gcloud iam service-accounts keys create key.json --iam-account quickstart@<your-project-123>.iam.gserviceaccount.com
+   ```
+
+3. **Authenticate the Service Account**:
+   Pass the location of the service account key file:
+   ```bash
+   gcloud auth activate-service-account --key-file key.json
+   ```
+
+4. **Obtain an Authorization Token**:
+   ```bash
+   gcloud auth print-access-token
+   ```
+   The token will be printed in the output and will be used in the next steps.
+
+---
+
+### 2. Make an Annotate Video Request
+
+1. **Create a JSON Request File**:
+   Save the following text as `request.json`:
+   ```bash
+   cat > request.json <<EOF
+   {
+      "inputUri":"gs://spls/gsp154/video/train.mp4",
+      "features": [
+          "LABEL_DETECTION"
+      ]
+   }
+   EOF
+   ```
+
+   > [!NOTE]
+   > A public video of a train is used (`gs://spls/gsp154/video/train.mp4`). If preferred, upload your own video to Cloud Storage and replace the `inputUri` with your video's Cloud Storage URI (e.g., `gs://bucket/object`).
+
+2. **Submit the Video Annotation Request**:
+   Use the `curl` command to make the request:
+   ```bash
+   curl -s -H 'Content-Type: application/json' \
+       -H 'Authorization: Bearer '$(gcloud auth print-access-token)'' \
+       'https://videointelligence.googleapis.com/v1/videos:annotate' \
+       -d @request.json
+   ```
+
+3. **Response**:
+   The API will process your request and return an operation name similar to the example below:
+   ```json
+   {
+     "name": "projects/474887704060/locations/asia-east1/operations/16366331060670521152"
+   }
+   ```
+
+   Note the `operation name`. You will use it in the next step.
+
+---
+
+### 3. Check the Operation Status
+
+1. **Request Operation Information**:
+   Replace `PROJECTS`, `LOCATIONS`, and `OPERATION_NAME` with the respective values from the previous step:
+   ```bash
+   curl -s -H 'Content-Type: application/json' \
+       -H 'Authorization: Bearer '$(gcloud auth print-access-token)'' \
+       'https://videointelligence.googleapis.com/v1/projects/PROJECTS/locations/LOCATIONS/operations/OPERATION_NAME'
+   ```
+
+2. **Wait for Completion**:
+   - If the operation is still running, the response will not contain a `done` field. Wait for about a minute and re-run the command.
+   - Once complete, the response will include `"done": true` and the annotated results:
+   ```json
+   {
+     "name": "projects/425437283751/locations/asia-east1/operations/17938636079131796601",
+     "done": true,
+     "response": {
+       "@type": "type.googleapis.com/google.cloud.videointelligence.v1.AnnotateVideoResponse",
+       "annotationResults": [
+         {
+           "inputUri": "/spls/gsp154/video/train.mp4",
+           "segmentLabelAnnotations": [
+             {
+               "entity": {
+                 "entityId": "/m/01yrx",
+                 "languageCode": "en-US"
+               },
+               "segments": [
+                 {
+                   "segment": {
+                     "startTimeOffset": "0s",
+                     "endTimeOffset": "14.833664s"
+                   },
+                   "confidence": 0.98509187
+                 }
+               ]
+             },
+            ...
 
