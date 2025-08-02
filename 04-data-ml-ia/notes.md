@@ -1,7 +1,6 @@
 # Google Cloud Data and Machine Learning Services
 
 <!--toc:start-->
-- [Google Cloud Data and Machine Learning Services](#google-cloud-data-and-machine-learning-services)
 - [Google Cloud Data](#google-cloud-data)
   - [Managed Services Google offers](#managed-services-google-offers)
     - [1. Dataproc](#1-dataproc)
@@ -94,6 +93,9 @@
     - [2. Create Your Speech-to-Text API Request](#2-create-your-speech-to-text-api-request)
     - [3. Call the Speech-to-Text API](#3-call-the-speech-to-text-api)
   - [Video Intelligence Lab 🚀](#video-intelligence-lab-🚀)
+    - [1. Set up Authorization](#1-set-up-authorization)
+    - [2. Make an Annotate Video Request](#2-make-an-annotate-video-request)
+    - [3. Check the Operation Status](#3-check-the-operation-status)
 <!--toc:end-->
 
 # Google Cloud Data
