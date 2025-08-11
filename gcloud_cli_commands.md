@@ -71,13 +71,13 @@ Options:
   --project=my-project-id
   ```
 
-- `--tags TAGS`:  
+- **Tags**:  
   **Description**: Adds network tags for firewall rules.  
-  **Possible values**: `web-server`, `secure-backend`.  
-  **Example in bash**:
+  **Examples**:
 
   ```bash
-  --tags web-server
+  --tags=web-server
+  --tags=secure-backend
   ```
 
 - **Labels**:
@@ -173,21 +173,22 @@ Options:
   --maintenance-policy=RESTART
   ```
 
-- `--preemptible`:  
+- **Preemptible**:  
   **Description**: Creates a preemptible instance.  
-  **Possible values**: Does not require additional values.  
-  **Example in bash**:
+  **Examples**:
 
   ```bash
   --preemptible
   ```
 
-- `--reservation-affinity TYPE`:  
+- **Reservation Affinity**:  
   **Description**: Specifies reservation affinity.  
-  **Possible values**: `any`, `specific`, `none`.  
-  **Example in bash**:
+  **Examples**:  
+
   ```bash
-  --reservation-affinity any
+  --reservation-affinity=any
+  --reservation-affinity=specific
+  --reservation-affinity=none
   ```
 
 ### SSH into a VM Instance
@@ -198,7 +199,14 @@ gcloud compute ssh INSTANCE_NAME
 
 Options:
 
-- `--zone ZONE`: Specify the zone of the instance.
+- **Zone**:
+  **Description**: Specify the zone of the instance.
+  **Examples**:
+
+  ```bash
+  --zone=us-east1-b
+  --zone=us-central1-a
+  ```
 
 ### List VM Instances
 
@@ -250,12 +258,55 @@ gcloud compute firewall-rules create RULE_NAME
 
 Options:
 
-- `--direction INGRESS|EGRESS`: Specify the rule direction.
-- `--priority PRIORITY`: Set the priority (default is `1000`).
+- **Direction**:
+  **Description**: Specify the rule direction.
+  **Examples**:
+
+  ```bash
+  --direction=INGRESS
+  --direction=EGRESS
+  ```
+
+- **Priority**:
+  **Description**: Set the priority.
+  **Examples**:
+
+  ```bash
+  --priority=1000
+  --priority=500
+  ```
+
 - `--network NETWORK_NAME`: Specify the VPC network.
-- `--action ALLOW|DENY`: Specify the action.
-- `--rules PROTOCOLS_AND_PORTS`: Define the protocols and ports (e.g., `tcp:22,tcp:80`).
-- `--source-ranges CIDR_RANGE`: Define the source ranges (e.g., `0.0.0.0/0`).
+- **Action**:
+  **Description**: Specify the action.
+  **Examples**:
+
+  ```bash
+  --action=ALLOW
+  --action=DENY
+  ```
+
+- **Protocols and Ports**:
+  **Description**: Define the protocols and ports for the firewall rule.
+  **Examples**:
+
+  ```bash
+  --rules=tcp:22,tcp:80
+  ```
+
+  **Alternative**:
+
+  ```bash
+  --rules=udp:53
+  ```
+
+- **Source Ranges**:
+  **Description**: Define the source ranges.
+  **Examples**:
+
+  ```bash
+  --source-ranges=0.0.0.0/0
+  ```
 
 ### List All Firewall Rules
 
@@ -276,7 +327,23 @@ gcloud storage buckets create gs://BUCKET_NAME
 Options:
 
 - `--location LOCATION`: Specify the bucket location (e.g., `US`).
-- `--storage-class CLASS`: Define the storage class (e.g., `STANDARD`, `NEARLINE`).
+
+- `--action=ACTION`: Specify the action for the command.
+  **Examples**:
+
+  ```bash
+  --action=ALLOW
+  --action=DENY
+  ```
+
+- **Storage Class**:
+  **Description**: Define the storage class.
+  **Examples**:
+
+  ```bash
+  --storage-class=STANDARD
+  --storage-class=NEARLINE
+  ```
 
 ### Upload an Object
 
@@ -314,7 +381,13 @@ gcloud sql connect INSTANCE_NAME
 
 Options:
 
-- `--user USERNAME`: Specify the database user.
+- **Database User**:
+  **Description**: Specify the database user.
+  **Examples**:
+
+  ```bash
+  --user=admin
+  ```
 
 ---
 
@@ -328,9 +401,32 @@ gcloud dataproc clusters create CLUSTER_NAME
 
 Options:
 
-- `--region REGION`: Specify the region.
-- `--num-workers NUM_WORKERS`: Set the number of workers.
-- `--worker-machine-type MACHINE_TYPE`: Define the machine type for workers.
+- **Region**:
+  **Description**: Specify the region.
+  **Examples**:
+
+  ```bash
+  --region=us-east1
+  --region=europe-west1
+  ```
+
+- **Number of Workers**:
+  **Description**: Set the number of workers.
+  **Examples**:
+
+  ```bash
+  --num-workers=3
+  --num-workers=5
+  ```
+
+- **Worker Machine Type**:
+  **Description**: Define the machine type for workers.
+  **Examples**:
+
+  ```bash
+  --worker-machine-type=n1-standard-2
+  --worker-machine-type=n1-highmem-4
+  ```
 
 ### Submit a Spark Job
 
@@ -467,7 +563,13 @@ gcloud logging read 'LOG_FILTER'
 
 Options:
 
-- `--limit NUM_RECORDS`: Limit the number of records.
+- **Limit Records**:
+  **Description**: Limit the number of records.
+  **Examples**:
+
+  ```bash
+  --limit=50
+  ```
 
 ---
 
