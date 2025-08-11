@@ -14,7 +14,15 @@ gcloud config set compute/region REGION
 
 Options:
 
-- `REGION`: Replace with your desired compute region (e.g., `us-east1`).
+- `REGION`: Replace with your desired compute region.
+
+  **Examples:**
+
+  ```bash
+  us-east1
+  us-central1
+  europe-west1
+  ```
 
 ### Set Compute Zone
 
@@ -24,7 +32,15 @@ gcloud config set compute/zone ZONE
 
 Options:
 
-- `ZONE`: Replace with your desired compute zone (e.g., `us-east1-b`).
+- `ZONE`: Replace with your desired compute zone.
+
+  **Examples:**
+
+  ```bash
+  us-east1-b
+  us-central1-a
+  europe-west1-b
+  ```
 
 ---
 
@@ -92,6 +108,9 @@ Options:
   ```bash
   --image-project=debian-cloud
   --image-project=ubuntu-os-cloud
+  --image-project=centos-cloud
+  --image-project=windows-cloud
+  --image-project=coreos-cloud
   ```
 
 - **Boot Disk Size**: Specifies the boot disk size.
@@ -115,6 +134,8 @@ Options:
   ```bash
   --boot-disk-device-name=boot-disk-1
   --boot-disk-device-name=primary-disk
+  --boot-disk-device-name=default
+  --boot-disk-device-name=my-custom-disk
   ```
 
 - **Metadata**: Adds metadata to the instance.
@@ -155,7 +176,7 @@ Options:
 
   ```bash
   --reservation-affinity=any
-  --reservation-affinity=specific
+  --reservation-affinity=specific:RESOURCE_NAME
   --reservation-affinity=none
   ```
 
@@ -192,7 +213,12 @@ gcloud compute networks create NETWORK_NAME
 
 Options:
 
-- `--subnet-mode SUBNET_MODE`: Specify `custom` or `auto`.
+- **Subnet Mode**: Specify the subnet mode.
+
+  ```bash
+  --subnet-mode=custom
+  --subnet-mode=auto
+  ```
 
 ### Create a Subnet
 
@@ -206,6 +232,8 @@ Options:
 
   ```bash
   --network=NETWORK_NAME
+  --network=default
+  --network=custom-network
   ```
 
 - **Region**: Specifies the region for the subnet.
@@ -263,24 +291,26 @@ Options:
   ```bash
   --action=ALLOW
   --action=DENY
+  --action=LOG
   ```
 
 - **Protocols and Ports**: Define the protocols and ports for the firewall rule.
 
   ```bash
   --rules=tcp:22,tcp:80
-  ```
-
-  **Alternative**:
-
-  ```bash
-  --rules=udp:53
+  --rules=tcp:443
+  --rules=udp:123
+  --rules=icmp
+  --rules=tcp:8080,udp:53
   ```
 
 - **Source Ranges**: Define the source ranges.
 
   ```bash
   --source-ranges=0.0.0.0/0
+  --source-ranges=192.168.1.0/24
+  --source-ranges=10.0.0.0/8
+  --source-ranges=172.16.0.0/12
   ```
 
 ### List All Firewall Rules
@@ -320,6 +350,9 @@ Options:
   ```bash
   --storage-class=STANDARD
   --storage-class=NEARLINE
+  --storage-class=COLDLINE
+  --storage-class=ARCHIVE
+  ```
   ```
 
 ### Upload an Object
@@ -362,6 +395,8 @@ Options:
 
   ```bash
   --user=admin
+  --user=readonly
+  --user=application-user
   ```
 
 ---
@@ -394,7 +429,40 @@ Options:
 
   ```bash
   --worker-machine-type=n1-standard-2
+  --worker-machine-type=n1-standard-4
+  --worker-machine-type=n1-standard-8
+  --worker-machine-type=n1-standard-16
+  --worker-machine-type=n1-standard-32
+  --worker-machine-type=n1-standard-64
+  --worker-machine-type=n1-highmem-2
   --worker-machine-type=n1-highmem-4
+  --worker-machine-type=n1-highmem-8
+  --worker-machine-type=n1-highmem-16
+  --worker-machine-type=n1-highmem-32
+  --worker-machine-type=n1-highmem-64
+  --worker-machine-type=n1-highcpu-2
+  --worker-machine-type=n1-highcpu-4
+  --worker-machine-type=n1-highcpu-8
+  --worker-machine-type=n1-highcpu-16
+  --worker-machine-type=n1-highcpu-32
+  --worker-machine-type=n1-highcpu-64
+  --worker-machine-type=e2-standard-2
+  --worker-machine-type=e2-standard-4
+  --worker-machine-type=e2-standard-8
+  --worker-machine-type=e2-standard-16
+  --worker-machine-type=e2-highmem-2
+  --worker-machine-type=e2-highmem-4
+  --worker-machine-type=e2-highmem-8
+  --worker-machine-type=e2-highmem-16
+  --worker-machine-type=e2-highcpu-2
+  --worker-machine-type=e2-highcpu-4
+  --worker-machine-type=e2-highcpu-8
+  --worker-machine-type=e2-highcpu-16
+  --worker-machine-type=c2-standard-4
+  --worker-machine-type=c2-standard-8
+  --worker-machine-type=c2-standard-16
+  --worker-machine-type=c2-standard-30
+  --worker-machine-type=c2-standard-60
   ```
 
 ### Submit a Spark Job
@@ -450,7 +518,7 @@ Options:
 - **Schema**: Define the table schema.
 
   ```bash
-  name:STRING,age:INTEGER
+  name:STRING,age:INTEGER,email:STRING,joined_date:DATE,active:BOOLEAN
   ```
 
 ### Query Data
@@ -525,6 +593,10 @@ Options:
 
   ```bash
   --topic=example-topic
+  --topic=my-topic
+  --topic=project-topic
+  --topic=cloud-functions-topic
+  --topic=data-stream-topic
   ```
 
 ### Publish a Message
