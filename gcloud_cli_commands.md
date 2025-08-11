@@ -38,9 +38,7 @@ gcloud compute instances create INSTANCE_NAME
 
 Options:
 
-- **Machine Type**:
-  **Description**: Specifies the machine type.
-  **Examples**:
+- **Machine Type**: Specifies the machine type.
 
   ```bash
   --machine-type=e2-medium
@@ -52,9 +50,7 @@ Options:
   --machine-type=e2-highmem-8
   ```
 
-- **Zone**:
-  **Description**: Specifies the zone.
-  **Examples**:
+- **Zone**: Specifies the zone.
 
   ```bash
   --zone=$ZONE
@@ -63,26 +59,20 @@ Options:
   --zone=europe-west1-b
   ```
 
-- **Project ID**:
-  **Description**: Specifies the project ID.
-  **Examples**:
+- **Project ID**: Specifies the project ID.
 
   ```bash
   --project=my-project-id
   ```
 
-- **Tags**:  
-  **Description**: Adds network tags for firewall rules.  
-  **Examples**:
+- **Tags**: Adds network tags for firewall rules.
 
   ```bash
   --tags=web-server
   --tags=secure-backend
   ```
 
-- **Labels**:
-  **Description**: Specifies labels for the instance.
-  **Examples key-values pairs**:
+- **Labels**: Specifies labels for the instance.
 
   ```bash
   --labels=KEY=VALUE
@@ -90,27 +80,21 @@ Options:
   --labels=team=devops
   ```
 
-- **Image Family**:
-  **Description**: Specifies the image to use for the instance.
-  **Examples**:
+- **Image Family**: Specifies the image to use for the instance.
 
   ```bash
   --image-family=debian-11
   --image-family=ubuntu-2004-focal-v20230420
   ```
 
-- **Image Project**:
-  **Description**: Specifies the project containing the image.
-  **Examples**:
+- **Image Project**: Specifies the project containing the image.
 
   ```bash
   --image-project=debian-cloud
   --image-project=ubuntu-os-cloud
   ```
 
-- **Boot Disk Size**:
-  **Description**: Specifies the boot disk size.
-  **Examples**:
+- **Boot Disk Size**: Specifies the boot disk size.
 
   ```bash
   --boot-disk-size=10GB
@@ -118,9 +102,7 @@ Options:
   --boot-disk-size=100GB
   ```
 
-- **Boot Disk Type**:
-  **Description**: Specifies the boot disk type.
-  **Examples**:
+- **Boot Disk Type**: Specifies the boot disk type.
 
   ```bash
   --boot-disk-type=pd-standard
@@ -128,44 +110,34 @@ Options:
   --boot-disk-type=pd-balanced
   ```
 
-- **Boot Disk Device Name**:
-  **Description**: Specifies the device name for the boot disk.
-  **Examples**:
+- **Boot Disk Device Name**: Specifies the device name for the boot disk.
 
   ```bash
   --boot-disk-device-name=boot-disk-1
   --boot-disk-device-name=primary-disk
   ```
 
-- **Metadata**:
-  **Description**: Adds metadata to the instance.
-  **Examples**:
+- **Metadata**: Adds metadata to the instance.
 
   ```bash
   --metadata=startup-script-url=gs://bucket/script.sh
   --metadata=enable-oslogin=TRUE
   ```
 
-- **Metadata from File**:
-  **Description**: Adds metadata from a file.
-  **Examples**:
+- **Metadata from File**: Adds metadata from a file.
 
   ```bash
   --metadata-from-file=startup-script=path/to/startup.sh
   ```
 
-- **Network Interface**:
-  **Description**: Defines the network interfaces.
-  **Examples**:
+- **Network Interface**: Defines the network interfaces.
 
   ```bash
   --network-interface=nic0
   --network-interface=nic1
   ```
 
-- **Maintenance Policy**:
-  **Description**: Defines the maintenance policy.
-  **Examples**:
+- **Maintenance Policy**: Defines the maintenance policy.
 
   ```bash
   --maintenance-policy=MIGRATE
@@ -173,17 +145,13 @@ Options:
   --maintenance-policy=RESTART
   ```
 
-- **Preemptible**:  
-  **Description**: Creates a preemptible instance.  
-  **Examples**:
+- **Preemptible**: Creates a preemptible instance.
 
   ```bash
   --preemptible
   ```
 
-- **Reservation Affinity**:  
-  **Description**: Specifies reservation affinity.  
-  **Examples**:  
+- **Reservation Affinity**: Specifies reservation affinity.
 
   ```bash
   --reservation-affinity=any
@@ -199,9 +167,7 @@ gcloud compute ssh INSTANCE_NAME
 
 Options:
 
-- **Zone**:
-  **Description**: Specify the zone of the instance.
-  **Examples**:
+- **Zone**: Specify the zone of the instance.
 
   ```bash
   --zone=us-east1-b
@@ -236,9 +202,23 @@ gcloud compute networks subnets create SUBNET_NAME
 
 Options:
 
-- `--network NETWORK_NAME`: Specify the VPC network.
-- `--region REGION`: Specify the region for the subnet.
-- `--range CIDR_RANGE`: Specify the CIDR range (e.g., `192.168.1.0/24`).
+- **Network**: Specifies the VPC network.
+
+  ```bash
+  --network=NETWORK_NAME
+  ```
+
+- **Region**: Specifies the region for the subnet.
+
+  ```bash
+  --region=REGION
+  ```
+
+- **CIDR Range**: Specifies the CIDR range for the subnet.
+
+  ```bash
+  --range=192.168.1.0/24
+  ```
 
 ### List VPC Networks
 
@@ -258,37 +238,34 @@ gcloud compute firewall-rules create RULE_NAME
 
 Options:
 
-- **Direction**:
-  **Description**: Specify the rule direction.
-  **Examples**:
+- **Direction**: Specify the rule direction.
 
   ```bash
   --direction=INGRESS
   --direction=EGRESS
   ```
 
-- **Priority**:
-  **Description**: Set the priority.
-  **Examples**:
+- **Priority**: Set the priority.
 
   ```bash
   --priority=1000
   --priority=500
   ```
 
-- `--network NETWORK_NAME`: Specify the VPC network.
-- **Action**:
-  **Description**: Specify the action.
-  **Examples**:
+- **Network**: Specify the VPC network.
+
+  ```bash
+  --network=NETWORK_NAME
+  ```
+
+- **Action**: Specify the action.
 
   ```bash
   --action=ALLOW
   --action=DENY
   ```
 
-- **Protocols and Ports**:
-  **Description**: Define the protocols and ports for the firewall rule.
-  **Examples**:
+- **Protocols and Ports**: Define the protocols and ports for the firewall rule.
 
   ```bash
   --rules=tcp:22,tcp:80
@@ -300,9 +277,7 @@ Options:
   --rules=udp:53
   ```
 
-- **Source Ranges**:
-  **Description**: Define the source ranges.
-  **Examples**:
+- **Source Ranges**: Define the source ranges.
 
   ```bash
   --source-ranges=0.0.0.0/0
@@ -326,19 +301,21 @@ gcloud storage buckets create gs://BUCKET_NAME
 
 Options:
 
-- `--location LOCATION`: Specify the bucket location (e.g., `US`).
+- **Location**: Specify the bucket location.
 
-- `--action=ACTION`: Specify the action for the command.
-  **Examples**:
+  ```bash
+  --location=US
+  --location=EU
+  ```
+
+- **Action**: Specify the action for the command.
 
   ```bash
   --action=ALLOW
   --action=DENY
   ```
 
-- **Storage Class**:
-  **Description**: Define the storage class.
-  **Examples**:
+- **Storage Class**: Define the storage class.
 
   ```bash
   --storage-class=STANDARD
@@ -381,9 +358,7 @@ gcloud sql connect INSTANCE_NAME
 
 Options:
 
-- **Database User**:
-  **Description**: Specify the database user.
-  **Examples**:
+- **Database User**: Specify the database user.
 
   ```bash
   --user=admin
@@ -401,27 +376,21 @@ gcloud dataproc clusters create CLUSTER_NAME
 
 Options:
 
-- **Region**:
-  **Description**: Specify the region.
-  **Examples**:
+- **Region**: Specify the region.
 
   ```bash
   --region=us-east1
   --region=europe-west1
   ```
 
-- **Number of Workers**:
-  **Description**: Set the number of workers.
-  **Examples**:
+- **Number of Workers**: Set the number of workers.
 
   ```bash
   --num-workers=3
   --num-workers=5
   ```
 
-- **Worker Machine Type**:
-  **Description**: Define the machine type for workers.
-  **Examples**:
+- **Worker Machine Type**: Define the machine type for workers.
 
   ```bash
   --worker-machine-type=n1-standard-2
@@ -436,9 +405,23 @@ gcloud dataproc jobs submit spark
 
 Options:
 
-- `--cluster CLUSTER_NAME`: Specify the cluster.
-- `--class MAIN_CLASS`: Define the main class for the job.
-- `--jars JAR_FILES`: Provide paths to JAR files.
+- **Cluster**: Specify the cluster.
+
+  ```bash
+  --cluster=CLUSTER_NAME
+  ```
+
+- **Main Class**: Define the main class for the job.
+
+  ```bash
+  --class=MAIN_CLASS
+  ```
+
+- **JAR Files**: Provide paths to JAR files.
+
+  ```bash
+  --jars=JAR_FILES
+  ```
 
 ### Delete a Cluster
 
@@ -464,7 +447,11 @@ bq mk --table TABLE_NAME SCHEMA
 
 Options:
 
-- `SCHEMA`: Define the table schema (e.g., `name:STRING,age:INTEGER`).
+- **Schema**: Define the table schema.
+
+  ```bash
+  name:STRING,age:INTEGER
+  ```
 
 ### Query Data
 
@@ -484,8 +471,17 @@ gcloud container clusters create CLUSTER_NAME
 
 Options:
 
-- `--num-nodes NUM_NODES`: Set the number of nodes.
-- `--zone ZONE`: Specify the zone.
+- **Number of Nodes**: Set the number of nodes.
+
+  ```bash
+  --num-nodes=NUM_NODES
+  ```
+
+- **Zone**: Specify the zone.
+
+  ```bash
+  --zone=ZONE
+  ```
 
 ### Get Cluster Credentials
 
@@ -495,7 +491,11 @@ gcloud container clusters get-credentials CLUSTER_NAME
 
 Options:
 
-- `--zone ZONE`: Specify the zone.
+- **Zone**: Specify the zone.
+
+  ```bash
+  --zone=ZONE
+  ```
 
 ### Delete a Cluster
 
@@ -521,9 +521,7 @@ gcloud pubsub subscriptions create SUBSCRIPTION_NAME
 
 Options:
 
-- **Topic**:
-  **Description**: Specify the topic.
-  **Examples**:
+- **Topic**: Specify the topic.
 
   ```bash
   --topic=example-topic
@@ -543,9 +541,7 @@ gcloud pubsub subscriptions pull SUBSCRIPTION_NAME
 
 Options:
 
-- **Auto Acknowledge**:
-  **Description**: Automatically acknowledge messages.
-  **Examples**:
+- **Auto Acknowledge**: Automatically acknowledge messages.
 
   ```bash
   --auto-ack
@@ -563,9 +559,7 @@ gcloud logging read 'LOG_FILTER'
 
 Options:
 
-- **Limit Records**:
-  **Description**: Limit the number of records.
-  **Examples**:
+- **Limit Records**: Limit the number of records.
 
   ```bash
   --limit=50
